@@ -12,7 +12,7 @@ var deceleration: float = 0.2
 
 
 #sliding variables
-var BOING = 1
+var BOING = 0.1
 var is_sliding = false
 var slide_length = 5
 var slide_length_save = slide_length
@@ -63,12 +63,16 @@ func _physics_process(delta):
 	if(is_on_wall() and is_sliding == true):
 		$AUDIO_Player.play()
 		is_sliding = false
+		print(slide_start_state)
 		velocity = -slide_start_state * BOING
 	if(is_sliding == true and slide_length > 0):
-		
+		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.0, 0.1)
 		slide_length -= delta
 		velocity = slide_start_state
+	if(is_sliding == false):
+		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.56, 0.1)
 	if(slide_length <= 0):
+		
 		is_sliding = false
 	if(dash_delay >= 0 and is_dashing == false):
 		dash_delay -= delta
