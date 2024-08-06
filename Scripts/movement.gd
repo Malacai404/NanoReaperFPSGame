@@ -16,7 +16,7 @@ var air_acceleration_multiplier = 0.4
 #sliding variables
 var BOING = 0.1
 var is_sliding = false
-var slide_force = 10
+var slide_force = 13
 var slide_length = 15
 var slide_length_save = slide_length
 var slide_start_state
