@@ -11,7 +11,11 @@ var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
 
 #camera variables
-var fov_max 
+@onready var camera = $HEAD_Player/CAMERA_Player
+var fov_max = 100
+var base_fov = 75
+var fov
+var camera_fov_shift_speed = 1
 
 
 #sliding variables
@@ -34,6 +38,7 @@ var dash_force = 30
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	fov = base_fov
 	
 	
 #camera follow logic
@@ -71,15 +76,19 @@ func _physics_process(delta):
 			velocity = -slide_start_state * BOING
 			$AUDIO_Player.play()
 	if(is_sliding == true and slide_length > 0):
+		fov = fov_max
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
 		velocity.x = slide_start_state.x
 		velocity.z = slide_start_state.z
+	if(is_dashing == false and is_sliding == false and is_on_floor()):
+		fov = base_fov
 	if(is_sliding == false):
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.56, 0.1)
 	if(slide_length <= 0):
 		
 		is_sliding = false
+		
 	if(dash_delay >= 0 and is_dashing == false):
 		dash_delay -= delta
 	if(dash_length >= 0):
@@ -119,6 +128,10 @@ func _physics_process(delta):
 			dash_delay = dash_delay_save
 
 func _process(delta):
+	if camera.fov > fov:
+		camera.fov -= delta * camera_fov_shift_speed
+	if camera.fov < fov:
+		camera.fov += delta * camera_fov_shift_speed
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
 	
