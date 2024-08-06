@@ -7,6 +7,8 @@ var jump_speed = 7
 var mouse_sensitivity = 0.002
 var acceleration = 0.2
 var deceleration: float = 0.2
+var air_deceleration_multiplier = 0.4
+var air_acceleration_multiplier = 0.4
 
 
 
@@ -54,11 +56,11 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration)
 	else:
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
-			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration - 0.1)
-			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration - 0.1)
+			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration * air_acceleration_multiplier)
+			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration * air_acceleration_multiplier)
 		elif(is_dashing == false and is_sliding == false):
-			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration - 0.1)
-			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration - 0.1)
+			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration * air_deceleration_multiplier)
+			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration * air_deceleration_multiplier)
 	
 	move_and_slide()
 	if(is_on_wall() and is_sliding == true):
