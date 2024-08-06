@@ -8,7 +8,11 @@ var mouse_sensitivity = 0.002
 var acceleration = 0.2
 var deceleration: float = 0.2
 
+
+
+
 #sliding variables
+var BOING = 1
 var is_sliding = false
 var slide_length = 5
 var slide_length_save = slide_length
@@ -56,7 +60,12 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration /3)
 	
 	move_and_slide()
+	if(is_on_wall() and is_sliding == true):
+		$AUDIO_Player.play()
+		is_sliding = false
+		velocity = -slide_start_state * BOING
 	if(is_sliding == true and slide_length > 0):
+		
 		slide_length -= delta
 		velocity = slide_start_state
 	if(slide_length <= 0):
@@ -71,10 +80,14 @@ func _physics_process(delta):
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_speed
 		is_sliding = false
-	if is_on_floor() and Input.is_action_just_pressed("slide"):
-		slide_start_state = Vector3(input.x, 0, input.y) * dash_force
-		is_sliding = true
-		slide_length = slide_length_save
+	if  Input.is_action_just_pressed("slide"):
+		if is_on_floor() and is_sliding == false:
+			if(input != Vector2.ZERO):
+				slide_start_state = transform.basis * Vector3(input.x, 0, input.y) * dash_force
+			else:
+				slide_start_state = transform.basis * Vector3(0, 0, -1) * dash_force
+			is_sliding = true
+			slide_length = slide_length_save
 	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0:
 		if(input != Vector2.ZERO):
 			velocity += transform.basis * Vector3(input.x, 0, input.y) * dash_force
