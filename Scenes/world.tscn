@@ -51,6 +51,7 @@ material = ExtResource("1_4ei0e")
 
 [node name="Player" type="CharacterBody3D" parent="level"]
 script = ExtResource("2_mxp76")
+BOINGACTIVE = true
 
 [node name="BEAN_Player" type="MeshInstance3D" parent="level/Player"]
 mesh = SubResource("CapsuleMesh_gk03l")

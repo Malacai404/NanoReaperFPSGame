@@ -10,11 +10,13 @@ var deceleration: float = 0.2
 var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
 
-
+#camera variables
+var fov_max 
 
 
 #sliding variables
-var BOING = 0.1
+@export var BOINGACTIVE = false
+var BOING = 1
 var is_sliding = false
 var slide_force = 13
 var slide_length = 15
@@ -63,8 +65,11 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration * air_deceleration_multiplier)
 	
 	move_and_slide()
-	if(is_on_wall() and is_sliding == true):
+	if(is_on_wall() and is_sliding == true or is_on_wall() and is_dashing == true):
 		is_sliding = false
+		if(BOINGACTIVE == true):
+			velocity = -slide_start_state * BOING
+			$AUDIO_Player.play()
 	if(is_sliding == true and slide_length > 0):
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
@@ -103,6 +108,7 @@ func _physics_process(delta):
 	if Input.is_action_just_released("slide"):
 		is_sliding = false
 	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0:
+		slide_start_state = transform.basis * Vector3(0, 0, -1) * dash_force
 		if(input != Vector2.ZERO):
 			velocity += transform.basis * Vector3(input.x, 0, input.y) * dash_force
 			dash_length = dash_length_save
