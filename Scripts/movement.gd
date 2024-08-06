@@ -1,9 +1,9 @@
 extends CharacterBody3D
 
 #movement variables
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var gravity = 15
 var speed = 8
-var jump_speed = 5
+var jump_speed = 7
 var mouse_sensitivity = 0.002
 var acceleration = 0.2
 var deceleration: float = 0.2
@@ -14,17 +14,18 @@ var deceleration: float = 0.2
 #sliding variables
 var BOING = 0.1
 var is_sliding = false
-var slide_length = 5
+var slide_force = 10
+var slide_length = 15
 var slide_length_save = slide_length
 var slide_start_state
 
 #dashing variables
 var is_dashing = false
-var dash_delay = 0.3
+var dash_delay = 0.5
 var dash_delay_save = dash_delay
-var dash_length = 0.2
+var dash_length = 0.1
 var dash_length_save = dash_length
-var dash_force = 20
+var dash_force = 30
 
 
 func _ready():
@@ -53,22 +54,20 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration)
 	else:
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
-			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration * 1.1)
-			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration * 1.1)
+			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration - 0.1)
+			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration - 0.1)
 		elif(is_dashing == false and is_sliding == false):
-			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration / 3)
-			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration /3)
+			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration - 0.1)
+			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration - 0.1)
 	
 	move_and_slide()
 	if(is_on_wall() and is_sliding == true):
-		$AUDIO_Player.play()
 		is_sliding = false
-		print(slide_start_state)
-		velocity = -slide_start_state * BOING
 	if(is_sliding == true and slide_length > 0):
-		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.0, 0.1)
+		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
-		velocity = slide_start_state
+		velocity.x = slide_start_state.x
+		velocity.z = slide_start_state.z
 	if(is_sliding == false):
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.56, 0.1)
 	if(slide_length <= 0):
@@ -84,14 +83,23 @@ func _physics_process(delta):
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_speed
 		is_sliding = false
-	if  Input.is_action_just_pressed("slide"):
+		
+	if(input.x < 0):
+		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 2.0, 0.2)
+	elif(input.x > 0):
+		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, -2.0, 0.2)
+	else:
+		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 0.0, 0.2)
+	if Input.is_action_just_pressed("slide"):
+		if(input != Vector2.ZERO):
+			slide_start_state = transform.basis * Vector3(input.x, 0, input.y) * slide_force
+		else:
+			slide_start_state = transform.basis * Vector3(0, 0, -1) * slide_force
 		if is_on_floor() and is_sliding == false:
-			if(input != Vector2.ZERO):
-				slide_start_state = transform.basis * Vector3(input.x, 0, input.y) * dash_force
-			else:
-				slide_start_state = transform.basis * Vector3(0, 0, -1) * dash_force
 			is_sliding = true
 			slide_length = slide_length_save
+	if Input.is_action_just_released("slide"):
+		is_sliding = false
 	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0:
 		if(input != Vector2.ZERO):
 			velocity += transform.basis * Vector3(input.x, 0, input.y) * dash_force
