@@ -7,7 +7,7 @@ var mouse_sensitivity = 0.002
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
+	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		rotate_y(-event.relative.x * mouse_sensitivity)
@@ -25,3 +25,8 @@ func _physics_process(delta):
 	move_and_slide()
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_speed
+
+func _process(delta):
+	if Input.is_action_just_pressed("quick_exit"):
+		get_tree().quit()
+	
