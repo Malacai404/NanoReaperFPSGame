@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+var woman = false
+@onready var bow = $bow
 var blood_ball = preload("res://Prefabs/blood_orb.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -8,6 +10,10 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
+	if(woman == true):
+		bow.visible = true
+	else:
+		bow.visible = false
 	look_at($"../Player".position)
 	rotation_degrees = Vector3(0, rotation_degrees.y, 0)
 

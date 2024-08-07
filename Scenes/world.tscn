@@ -1,11 +1,13 @@
-[gd_scene load_steps=16 format=3 uid="uid://tbfk3kr6wutv"]
+[gd_scene load_steps=21 format=3 uid="uid://tbfk3kr6wutv"]
 
 [ext_resource type="Material" uid="uid://dbxdw3tgowpgd" path="res://Materials/prototype_material_gray.tres" id="1_4ei0e"]
 [ext_resource type="Texture2D" uid="uid://ox53rblp5gp6" path="res://Sprites/Prototype Textures/Grey.png" id="2_g6pl5"]
 [ext_resource type="Script" path="res://Scripts/player.gd" id="2_mxp76"]
 [ext_resource type="AudioStream" uid="uid://c5a2qxgpgqv6v" path="res://Audio/BOING.mp3" id="3_4equq"]
 [ext_resource type="Texture2D" uid="uid://djgcil4gdn817" path="res://Sprites/white_square.png" id="4_70w32"]
-[ext_resource type="PackedScene" uid="uid://b0ijusw17t7k3" path="res://Prefabs/hamster.tscn" id="6_ud5u5"]
+[ext_resource type="Shader" path="res://Shaders/fire_thingy.gdshader" id="6_g6jn3"]
+[ext_resource type="Texture2D" uid="uid://bkmjdxqfh70ky" path="res://StylizedFire/HoleNoise.png" id="7_bvxtv"]
+[ext_resource type="Texture2D" uid="uid://bgs3cnfmkfak2" path="res://StylizedFire/GreenFireGradient.tres" id="8_fym3x"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ib2r2"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -40,6 +42,20 @@ uv1_scale = Vector3(93.22, 9, 92.965)
 albedo_texture = ExtResource("2_g6pl5")
 uv1_scale = Vector3(3.67, 129.755, 5.485)
 
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gopka"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hhxrr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vl47o"]
+render_priority = 0
+shader = ExtResource("6_g6jn3")
+shader_parameter/emission_intensity = -0.71
+shader_parameter/time_scale = 2.02
+shader_parameter/texture_scale = Vector2(1, 1)
+shader_parameter/edge_softness = 0.1
+shader_parameter/noise_texture = ExtResource("7_bvxtv")
+shader_parameter/texture_mask = ExtResource("8_fym3x")
+
 [node name="world" type="Node3D"]
 
 [node name="environment" type="Node3D" parent="."]
@@ -63,7 +79,6 @@ material = ExtResource("1_4ei0e")
 
 [node name="Player" type="CharacterBody3D" parent="level"]
 script = ExtResource("2_mxp76")
-BOINGACTIVE = true
 
 [node name="BEAN_Player" type="MeshInstance3D" parent="level/Player"]
 mesh = SubResource("CapsuleMesh_gk03l")
@@ -142,6 +157,36 @@ text = "Dark Energy:"
 label_settings = SubResource("LabelSettings_6pfd7")
 vertical_alignment = 1
 
+[node name="HUD_SECRET_Goofy" type="ColorRect" parent="level/Player/HUD"]
+layout_mode = 0
+offset_right = 1894.0
+offset_bottom = 1050.0
+
+[node name="HUD_SECRET_Hampter" type="Button" parent="level/Player/HUD/HUD_SECRET_Goofy"]
+layout_mode = 0
+offset_left = 501.0
+offset_top = 427.0
+offset_right = 951.0
+offset_bottom = 601.0
+theme_override_font_sizes/font_size = 131
+text = "HAMPTER"
+
+[node name="HUD_SECRET_ATRAIN" type="Button" parent="level/Player/HUD/HUD_SECRET_Goofy"]
+offset_left = 1130.0
+offset_top = 175.0
+offset_right = 1756.0
+offset_bottom = 363.0
+theme_override_font_sizes/font_size = 131
+text = "A-TRAIN"
+
+[node name="HUD_SECRET_BOING" type="Button" parent="level/Player/HUD/HUD_SECRET_Goofy"]
+offset_left = 99.0
+offset_top = 124.0
+offset_right = 725.0
+offset_bottom = 312.0
+theme_override_font_sizes/font_size = 131
+text = "BOING"
+
 [node name="walls" type="Node3D" parent="level"]
 
 [node name="wall1" type="CSGBox3D" parent="level/walls"]
@@ -174,29 +219,12 @@ use_collision = true
 polygon = PackedVector2Array(0, 0, 0, 1, -3.45946, -1.52005, 1, 0)
 material = SubResource("StandardMaterial3D_hppit")
 
-[node name="Hamster" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 9.44748)
+[node name="Enemy_Melee" type="CharacterBody3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.02066, 0, 0)
 
-[node name="Hamster2" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 11.0656)
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Enemy_Melee"]
+shape = SubResource("CapsuleShape3D_gopka")
 
-[node name="Hamster3" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 12.6889)
-
-[node name="Hamster4" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 14.3069)
-
-[node name="Hamster5" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 16.0174)
-
-[node name="Hamster6" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 17.6355)
-
-[node name="Hamster7" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 19.2588)
-
-[node name="Hamster8" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 20.8768)
-
-[node name="Hamster9" parent="level" instance=ExtResource("6_ud5u5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.17599, 22.6967)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="level/Enemy_Melee"]
+mesh = SubResource("CapsuleMesh_hhxrr")
+surface_material_override/0 = SubResource("ShaderMaterial_vl47o")
