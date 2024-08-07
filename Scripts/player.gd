@@ -1,12 +1,17 @@
 extends CharacterBody3D
 
+# SECRET variables
+var hamster = preload("res://Prefabs/hamster.tscn")
+var previousinputs = []
+var konamicode = ["Up", "Up", "Up", "Up", "Down", "Down", "Down", "Down", "Left", "Left", "Right", "Right", "Left", "Left", "Right", "Right", "B", "B", "A", "A"]
+var goofy_menu = false
+@onready var goofy_menu_object = $HUD/HUD_SECRET_Goofy
 #HUD variables
-
 var nano_regen_rate = 1
 var regen_time = 0.5
 var regen_time_base = regen_time
 var nanobot_regen_per_second = nano_regen_rate / regen_time
-var nanobot_count = 150
+var nanobot_count = 1500
 var dark_energy_value = 0
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
@@ -36,8 +41,9 @@ var camera_fov_shift_speed = 25
 
 
 #sliding variables
+@export var BOING_ACTIVE_SECRET = false
 @export var BOINGACTIVE = false
-var BOING = 1
+var BOING = 0.1
 var is_sliding = false
 var slide_cost = 1
 var slide_cost_time = 0.5
@@ -56,8 +62,18 @@ var dash_length = 0.1
 var dash_length_save = dash_length
 var dash_force = 30
 
+func _start_bounce():
+	_bounce(slide_start_state)
 
+func _bounce(slide_state):
+	velocity = -slide_state
+func _input(ev):
+	if ev is InputEventKey:
+		previousinputs.append(ev.as_text_keycode())
+		if(len(previousinputs) > 20):
+			previousinputs.remove_at(0)
 func _ready():
+	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	fov = base_fov
 	
@@ -97,7 +113,11 @@ func _physics_process(delta):
 	if(is_on_wall() and is_sliding == true or is_on_wall() and is_dashing == true):
 		is_sliding = false
 		if(BOINGACTIVE == true):
-			velocity = -slide_start_state * BOING
+			if(BOING_ACTIVE_SECRET == true):
+				velocity = -slide_start_state * BOING
+				$AUDIO_Player.play()
+			else:
+				velocity = -slide_start_state * BOING
 			
 	if(is_sliding == true and slide_length > 0):
 		if(slide_cost_time > 0):
@@ -158,6 +178,13 @@ func _physics_process(delta):
 			dash_delay = dash_delay_save
 
 func _process(delta):
+	if(previousinputs == konamicode):
+		goofy_menu = true
+	if(goofy_menu == true):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		goofy_menu_object.visible = true
+	else:
+		goofy_menu_object.visible = false
 	dark_energy_counter.text = str("Dark Energy:", dark_energy_value)
 	if(nanobot_count <= 0):
 		_death()
@@ -176,4 +203,14 @@ func _process(delta):
 		camera.fov += delta * camera_fov_shift_speed
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
+
+
+func _spawn_hamster():
+	for i in range(5):
+		var hamster_object = hamster.instantiate()
+		hamster_object.position = Vector3(0, -1, 0)
+		get_parent().add_child(hamster_object)
+	previousinputs = []
+	goofy_menu = false
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
