@@ -56,6 +56,11 @@ var dash_length = 0.1
 var dash_length_save = dash_length
 var dash_force = 30
 
+func _start_bounce():
+	_bounce(slide_start_state)
+
+func _bounce(slide_state):
+	velocity = -slide_state
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

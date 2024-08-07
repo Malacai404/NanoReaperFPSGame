@@ -18,6 +18,7 @@ func _spurt_blood():
 func _on_hamster_area_body_entered(body):
 	if(body.name == "Player"):
 		if(body.velocity.x > 8 or body.velocity.z > 8 or body.velocity.x < -8 or body.velocity.z <-8):
+			body._start_bounce()
 			for i in range(25):
 				_spurt_blood()
 			body.dark_energy_value += 10
