@@ -89,10 +89,10 @@ offset_bottom = 52.0
 
 [node name="HUD_NanobotSlider" type="TextureProgressBar" parent="level/Player/HUD"]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 1520.0
-offset_right = 1361.0
-offset_bottom = 1668.0
+offset_left = 47.0
+offset_top = 813.0
+offset_right = 1381.0
+offset_bottom = 961.0
 scale = Vector2(0.54, 0.54)
 max_value = 500.0
 value = 77.0
@@ -120,10 +120,10 @@ vertical_alignment = 1
 
 [node name="HUD_DarkEnergyCounter" type="TextureProgressBar" parent="level/Player/HUD"]
 layout_mode = 0
-offset_left = 27.0
-offset_top = 1624.0
-offset_right = 1361.0
-offset_bottom = 1772.0
+offset_left = 47.0
+offset_top = 917.0
+offset_right = 1381.0
+offset_bottom = 1065.0
 scale = Vector2(0.54, 0.54)
 value = 94.0
 nine_patch_stretch = true

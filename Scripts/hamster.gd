@@ -20,4 +20,4 @@ func _on_hamster_area_body_entered(body):
 			for i in range(25):
 				_spurt_blood()
 			body.dark_energy_value += 10
-			queue_free()
+			position = Vector3(randf_range(-25,25), position.y, randf_range(-25, 25))
