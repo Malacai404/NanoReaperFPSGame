@@ -7,7 +7,7 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	look_at($"../Player".position)
 	rotation_degrees = Vector3(0, rotation_degrees.y, 0)
 
