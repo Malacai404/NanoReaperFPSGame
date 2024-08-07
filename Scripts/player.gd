@@ -145,7 +145,7 @@ func _physics_process(delta):
 			slide_length = slide_length_save
 	if Input.is_action_just_released("slide"):
 		is_sliding = false
-	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0:
+	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0 and is_sliding == false:
 		nanobot_count -= dash_cost
 		slide_start_state = transform.basis * Vector3(0, 0, -1) * dash_force
 		if(input != Vector2.ZERO):

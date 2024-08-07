@@ -17,7 +17,7 @@ func _spurt_blood():
 func _on_hamster_area_body_entered(body):
 	if(body.name == "Player"):
 		if(body.is_dashing == true):
-			for i in range(10):
+			for i in range(25):
 				_spurt_blood()
 			body.dark_energy_value += 10
 			queue_free()
