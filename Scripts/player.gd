@@ -6,6 +6,7 @@ var konamicode = ["Up", "Up", "Up", "Up", "Down", "Down", "Down", "Down", "Left"
 var goofy_menu = false
 @onready var goofy_menu_object = $HUD/HUD_SECRET_Goofy
 #HUD variables
+var dead = false
 var nano_regen_rate = 1
 var regen_time = 0.5
 var regen_time_base = regen_time
@@ -76,8 +77,14 @@ func _ready():
 	fov = base_fov
 	
 	
-func _death():
+func _reload():
+	get_tree().paused = false
 	get_tree().reload_current_scene()
+	
+	
+func _death():
+	get_tree().paused = true
+	dead = true
 	
 #camera follow logic
 func _unhandled_input(event):
@@ -87,6 +94,9 @@ func _unhandled_input(event):
 		$HEAD_Player.rotation.x = clampf($HEAD_Player.rotation.x, -deg_to_rad(75), deg_to_rad(45))
 		
 func _physics_process(delta):
+	if(dead == true):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
 	velocity.y += -gravity * delta
 	var input = Input.get_vector("left", "right", "forward", "back")
 	
@@ -182,6 +192,8 @@ func _process(delta):
 	dark_energy_counter.text = str("Dark Energy:", dark_energy_value)
 	if(nanobot_count <= 0):
 		_death()
+	if(dead == true):
+		$HUD/Death_Screen.visible = true
 	if(regen_time > 0):
 		regen_time -= delta
 	else:
