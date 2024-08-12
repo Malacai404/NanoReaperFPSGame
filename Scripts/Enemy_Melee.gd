@@ -1,17 +1,21 @@
 extends CharacterBody3D
-
+class_name enemy
 
 var player = null
+
+var health = 5
 
 var speed = 5
 
 var attacking = false
 
-var ATTACK_RANGE = 2
+@onready var nanobot_orb = preload("res://Prefabs/nanobot_orb.tscn")
+
+var ATTACK_RANGE = 1.5
 
 @export var player_path : NodePath
 
-var dead
+var dead = false
 
 var state_machine = null
 
@@ -19,8 +23,12 @@ var state_machine = null
 
 @onready var nav_agent = $Enemy_Nav_Agent
 
+func _take_damage(taken_damage):
+	health -= taken_damage
+
 func _attack_reset():
-	attacking = false
+	if(!_target_in_range()):
+		attacking = false
 
 func _attack():
 	if(_target_in_range()):
@@ -34,6 +42,15 @@ func _ready():
 	
 	
 func _process(delta):
+	if(health <= 0):
+		dead = true
+	if(dead == true):
+		var nanobot_orb_object = nanobot_orb.instantiate()
+		nanobot_orb_object.position = Vector3(position.x, position.y - 0.5, position.z)
+		nanobot_orb_object.value = 10
+		get_parent().add_child(nanobot_orb_object)
+		queue_free()
+		return
 	velocity = Vector3.ZERO
 	
 	match  state_machine.get_current_node():
