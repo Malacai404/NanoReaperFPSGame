@@ -1,26 +1,31 @@
 extends CharacterBody3D
 
+class_name player
+
 # SECRET variables
-var hamster = preload("res://Prefabs/hamster.tscn")
 var previousinputs = []
 var konamicode = ["Up", "Up", "Up", "Up", "Down", "Down", "Down", "Down", "Left", "Left", "Right", "Right", "Left", "Left", "Right", "Right", "B", "B", "A", "A"]
 var goofy_menu = false
 @onready var goofy_menu_object = $HUD/HUD_SECRET_Goofy
 #HUD variables
+var dead = false
 var nano_regen_rate = 1
 var regen_time = 0.5
 var regen_time_base = regen_time
 var nanobot_regen_per_second = nano_regen_rate / regen_time
-var nanobot_count = 1500
-var dark_energy_value = 0
+var nanobot_count = 150
+var void_energy_value = 200
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
-@onready var dark_energy_slider = $HUD/HUD_DarkEnergyCounter
+@onready var void_energy_slider = $HUD/HUD_VOIDEnergySlider
 @onready var nanobot_regen_rate_counter = $HUD/HUD_NanobotSlider/HUD_NanobotRegenRate
-@onready var hud_nanobot_counter = $HUD/HUD_NanobotSlider/HUD_NanobotCount
-@onready var dark_energy_counter = $HUD/HUD_DarkEnergyCounter/HUD_DarkEnergyCount
+@onready var nanobot_counter = $HUD/HUD_NanobotSlider/HUD_NanobotCount
+@onready var void_energy_counter = $HUD/HUD_VOIDEnergySlider/HUD_VOIDEnergyCount
 
 
+
+@onready var bullet = preload("res://Prefabs/bullet.tscn")
+@onready var bulletspawn = $HEAD_Player/Revolver/Bullet_Spawn
 
 #movement variables
 var gravity = 15
@@ -33,6 +38,7 @@ var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
 
 #camera variables
+@export var tilt = true
 @onready var camera = $HEAD_Player/CAMERA_Player
 var fov_max = 75
 var base_fov = 75
@@ -41,9 +47,8 @@ var camera_fov_shift_speed = 25
 
 
 #sliding variables
-@export var BOING_ACTIVE_SECRET = false
 @export var BOINGACTIVE = false
-var BOING = 0.1
+var BOING = 1
 var is_sliding = false
 var slide_cost = 1
 var slide_cost_time = 0.5
@@ -78,8 +83,14 @@ func _ready():
 	fov = base_fov
 	
 	
-func _death():
+func _reload():
+	get_tree().paused = false
 	get_tree().reload_current_scene()
+	
+	
+func _death():
+	get_tree().paused = true
+	dead = true
 	
 #camera follow logic
 func _unhandled_input(event):
@@ -89,11 +100,14 @@ func _unhandled_input(event):
 		$HEAD_Player.rotation.x = clampf($HEAD_Player.rotation.x, -deg_to_rad(75), deg_to_rad(45))
 		
 func _physics_process(delta):
+	if(dead == true):
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		return
 	velocity.y += -gravity * delta
 	var input = Input.get_vector("left", "right", "forward", "back")
 	
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
-	#checks for input
+	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration)
@@ -109,16 +123,30 @@ func _physics_process(delta):
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration * air_deceleration_multiplier)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration * air_deceleration_multiplier)
 	
-	move_and_slide()
 	if(is_on_wall() and is_sliding == true or is_on_wall() and is_dashing == true):
 		is_sliding = false
 		if(BOINGACTIVE == true):
-			if(BOING_ACTIVE_SECRET == true):
-				velocity = -slide_start_state * BOING
-				$AUDIO_Player.play()
-			else:
-				velocity = -slide_start_state * BOING
+			velocity = -slide_start_state * BOING
 			
+
+	# Jump process
+		
+	if is_on_floor() and Input.is_action_just_pressed("jump"):
+		velocity.y = jump_speed
+		is_sliding = false
+		
+	# Tilt process
+	if(tilt == true):
+		if(input.x < 0):
+			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 2.0, 0.2)
+		elif(input.x > 0):
+			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, -2.0, 0.2)
+		else:
+			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 0.0, 0.2)
+
+			
+	# Slide Process
+	
 	if(is_sliding == true and slide_length > 0):
 		if(slide_cost_time > 0):
 			slide_cost_time -= delta
@@ -130,31 +158,21 @@ func _physics_process(delta):
 		slide_length -= delta
 		velocity.x = slide_start_state.x
 		velocity.z = slide_start_state.z
-	if(is_dashing == false and is_sliding == false and is_on_floor()):
-		fov = base_fov
+	
 	if(is_sliding == false):
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.56, 0.1)
+		
+		
+	
+	if Input.is_action_just_pressed("shoot"):
+		var bullet_object = bullet.instantiate()
+		bullet_object.rotation_degrees = Vector3($HEAD_Player.rotation_degrees.x, rotation_degrees.y, $HEAD_Player.rotation_degrees.z)
+		get_parent().add_child(bullet_object)
+		bullet_object.global_position = bulletspawn.global_position
+	
 	if(slide_length <= 0):
-		
 		is_sliding = false
 		
-	if(dash_delay >= 0 and is_dashing == false):
-		dash_delay -= delta
-	if(dash_length >= 0):
-		dash_length -= delta
-		is_dashing = true
-	else:
-		is_dashing = false
-	if is_on_floor() and Input.is_action_just_pressed("jump"):
-		velocity.y = jump_speed
-		is_sliding = false
-		
-	if(input.x < 0):
-		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 2.0, 0.2)
-	elif(input.x > 0):
-		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, -2.0, 0.2)
-	else:
-		$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 0.0, 0.2)
 	if Input.is_action_just_pressed("slide"):
 		if(input != Vector2.ZERO):
 			slide_start_state = transform.basis * Vector3(input.x, 0, input.y) * slide_force
@@ -163,10 +181,26 @@ func _physics_process(delta):
 		if is_on_floor() and is_sliding == false:
 			is_sliding = true
 			slide_length = slide_length_save
+
 	if Input.is_action_just_released("slide"):
 		is_sliding = false
+		
+	# Dash Process
+	
+	if(dash_delay >= 0 and is_dashing == false):
+		dash_delay -= delta
+		
+	if(dash_length >= 0):
+		dash_length -= delta
+		is_dashing = true
+	else:
+		is_dashing = false
+	
 	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0 and is_sliding == false:
-		nanobot_count -= dash_cost
+		if(void_energy_value >= 0+ dash_cost):
+			void_energy_value -= dash_cost
+		else:
+			return
 		slide_start_state = transform.basis * Vector3(0, 0, -1) * dash_force
 		if(input != Vector2.ZERO):
 			velocity += transform.basis * Vector3(input.x, 0, input.y) * dash_force
@@ -176,8 +210,11 @@ func _physics_process(delta):
 			velocity += transform.basis * Vector3(0, 0, -1) * dash_force
 			dash_length = dash_length_save
 			dash_delay = dash_delay_save
+	move_and_slide()
 
 func _process(delta):
+	
+	# Secret processes
 	if(previousinputs == konamicode):
 		goofy_menu = true
 	if(goofy_menu == true):
@@ -185,32 +222,26 @@ func _process(delta):
 		goofy_menu_object.visible = true
 	else:
 		goofy_menu_object.visible = false
-	dark_energy_counter.text = str("Dark Energy:", dark_energy_value)
+	# Hud processes
+	void_energy_counter.text = str("Dark Energy:", void_energy_value)
+	nanobot_regen_rate_counter.text = str(nanobot_regen_per_second, "/S")
+	nanobot_counter.text = str("Nanobots: ", nanobot_count)
+	nanobot_slider.value = nanobot_count
+	void_energy_slider.value = void_energy_value
+	if(dead == true):
+		$HUD/Death_Screen.visible = true
+	
+	# Value processes
 	if(nanobot_count <= 0):
 		_death()
+	
 	if(regen_time > 0):
 		regen_time -= delta
 	else:
 		nanobot_count += nano_regen_rate
 		regen_time = regen_time_base
-	nanobot_regen_rate_counter.text = str(nanobot_regen_per_second, "/S")
-	hud_nanobot_counter.text = str("Nanobots: ", nanobot_count)
-	nanobot_slider.value = nanobot_count
-	dark_energy_slider.value = dark_energy_value
-	if camera.fov > fov:
-		camera.fov -= delta * camera_fov_shift_speed
-	if camera.fov < fov:
-		camera.fov += delta * camera_fov_shift_speed
+	
+
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
-
-
-func _spawn_hamster():
-	for i in range(5):
-		var hamster_object = hamster.instantiate()
-		hamster_object.position = Vector3(0, -1, 0)
-		get_parent().add_child(hamster_object)
-	previousinputs = []
-	goofy_menu = false
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
