@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctkue4w2ghjn1"]
+
+[ext_resource type="Texture2D" uid="uid://bq0w1eaq0rwsg" path="res://Sprites/Prototype Textures/purple 3.png" id="1_m45bk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i68yj"]
+albedo_texture = ExtResource("1_m45bk")
+uv1_scale = Vector3(4.45, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_gainc"]
+material = SubResource("StandardMaterial3D_i68yj")
+radial_segments = 9
+rings = 9
+
+[node name="hit_point" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_gainc")

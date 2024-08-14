@@ -3,7 +3,7 @@ class_name enemy
 
 signal enemy_hit
 
-var player = null
+var player_object = null
 
 var health = 5
 
@@ -35,16 +35,16 @@ func _attack_reset():
 
 func _attack():
 	if(_target_in_range()):
-		player.nanobot_count -= 10
+		player_object.nanobot_count -= 10
 	
 
 func _ready():
-	player = get_node(player_path)
+	player_object = get_node(player_path)
 	state_machine = anim_tree.get("parameters/playback")
 	
 	
 	
-func _process(delta):
+func _process(_delta):
 	if(health <= 0):
 		dead = true
 	if(dead == true):
@@ -58,12 +58,12 @@ func _process(delta):
 	
 	match  state_machine.get_current_node():
 		"run":
-			nav_agent.target_position = player.global_transform.origin
+			nav_agent.target_position = player_object.global_transform.origin
 			var next_nav_point = nav_agent.get_next_path_position()
 			velocity = (next_nav_point - global_transform.origin).normalized() * speed
-			look_at(Vector3(player.global_position.x + velocity.x, global_position.y, player.global_position.z + velocity.z), Vector3.UP)
+			look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
-			look_at(Vector3(player.global_position.x, global_position.y, player.global_position.z), Vector3.UP)
+			look_at(Vector3(player_object.global_position.x, global_position.y, player_object.global_position.z), Vector3.UP)
 
 	anim_tree.set("parameters/conditions/attack", _target_in_range())
 	anim_tree.set("parameters/conditions/run", !attacking)
@@ -74,6 +74,6 @@ func _process(delta):
 	move_and_slide()
 
 func _target_in_range():
-	return global_position.distance_to(player.global_position) < ATTACK_RANGE
+	return global_position.distance_to(player_object.global_position) < ATTACK_RANGE
 
 

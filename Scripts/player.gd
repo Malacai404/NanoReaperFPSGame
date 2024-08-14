@@ -24,10 +24,11 @@ var void_energy_value = 200
 
 # Shooting Variables
 
+var hit_point = load("res://hit_point.tscn")
 @onready var aim_ray = $HEAD_Player/AimRay
 var bullet_trail = load("res://Prefabs/bullet_trail.tscn")
 var instance
-@onready var bullet_spawn = $HEAD_Player/Revolver/Bullet_Spawn
+@onready var bullet_spawn = $HEAD_Player/WeaponHolder/Revolver/Bullet_Spawn
 @onready var aim_ray_end = $HEAD_Player/AimRayEnd
 
 
@@ -45,13 +46,10 @@ var air_acceleration_multiplier = 0.4
 
 @export var tilt = true
 @onready var camera = $HEAD_Player/CAMERA_Player
-@onready var shake_fix = $HEAD_Player/ShakeFix
-var initial_rotation : Vector3
-var fov_max = 75
-var base_fov = 75
-var fov
-var camera_fov_shift_speed = 25
-
+@onready var head = $HEAD_Player
+@export var cam_speed : float = 0.001
+@export var cam_rotation_amount : float = 1
+var mouse_input : Vector2
 
 #sliding variables
 @export var BOINGACTIVE = false
@@ -79,16 +77,20 @@ func _start_bounce():
 
 func _bounce(slide_state):
 	velocity = -slide_state
-func _input(ev):
-	if ev is InputEventKey:
-		previousinputs.append(ev.as_text_keycode())
+func _input(event):
+	if camera: 
+		if(event is InputEventMouseMotion):
+			head.rotation.x -= event.relative.y * cam_speed
+			head.rotation.x = clamp(head.rotation.x,-1.25,1.5)
+			rotation.y -= event.relative.x * cam_speed
+			mouse_input = event.relative
+	if event is InputEventKey:
+		previousinputs.append(event.as_text_keycode())
 		if(len(previousinputs) > 20):
 			previousinputs.remove_at(0)
 func _ready():
-	initial_rotation = camera.rotation_degrees
 	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	fov = base_fov
 	
 func _reload_scene():
 	get_tree().paused = false
@@ -110,13 +112,6 @@ func _death():
 	get_tree().paused = true
 	dead = true
 	
-#camera follow logic
-func _unhandled_input(event):
-	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * mouse_sensitivity)
-		$HEAD_Player.rotate_x(-event.relative.y * mouse_sensitivity)
-		$HEAD_Player.rotation.x = clampf($HEAD_Player.rotation.x, -deg_to_rad(75), deg_to_rad(45))
-		
 func _physics_process(delta):
 	if(dead == true):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -171,7 +166,6 @@ func _physics_process(delta):
 		else:
 			nanobot_count -= slide_cost
 			slide_cost_time = slide_cost_time_base
-		fov = fov_max
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
 		velocity.x = slide_start_state.x
@@ -249,12 +243,6 @@ func _process(delta):
 	# Value processes
 	if(nanobot_count <= 0):
 		_death()
-	
-	if(regen_time > 0):
-		regen_time -= delta
-	else:
-		nanobot_count += nano_regen_rate
-		regen_time = regen_time_base
 	
 
 	if Input.is_action_just_pressed("quick_exit"):
