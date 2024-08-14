@@ -90,19 +90,13 @@ func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	fov = base_fov
 	
-func _camera_shake():
-	var x = randf_range(-1.0,1.7)
-	var y = randf_range(-1.0,1.7)
-	var z = randf_range(-1.0,1.7)
-	camera.rotation_degrees = lerp(camera.rotation_degrees, Vector3(x, y, z), 0.5)
-	$HEAD_Player/ShakeFix.start()
 func _reload_scene():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 	
 	
 func _shoot():
-	_camera_shake()
+	camera._camera_shake()
 	instance = bullet_trail.instantiate()
 	if aim_ray.is_colliding():
 		instance.init(bullet_spawn.global_position, aim_ray.get_collision_point())
@@ -265,8 +259,4 @@ func _process(delta):
 
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
-	
 
-
-func _on_shake_fix_timeout():
-	camera.rotation_degrees = lerp(camera.rotation_degrees, initial_rotation, 0.5)
