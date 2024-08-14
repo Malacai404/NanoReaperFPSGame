@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://ds7wbtsrfiyj1"]
+
+[ext_resource type="Script" path="res://Scripts/bullet_trail.gd" id="1_mvabr"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fc50y"]
+transparency = 1
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+
+[node name="BulletTrail" type="MeshInstance3D"]
+material_override = SubResource("StandardMaterial3D_fc50y")
+script = ExtResource("1_mvabr")

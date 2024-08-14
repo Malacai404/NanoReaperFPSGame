@@ -22,10 +22,14 @@ var void_energy_value = 200
 @onready var nanobot_counter = $HUD/HUD_NanobotSlider/HUD_NanobotCount
 @onready var void_energy_counter = $HUD/HUD_VOIDEnergySlider/HUD_VOIDEnergyCount
 
+# Shooting Variables
 
+@onready var aim_ray = $HEAD_Player/AimRay
+var bullet_trail = load("res://Prefabs/bullet_trail.tscn")
+var instance
+@onready var bullet_spawn = $HEAD_Player/Revolver/Bullet_Spawn
+@onready var aim_ray_end = $HEAD_Player/AimRayEnd
 
-@onready var bullet = preload("res://Prefabs/bullet.tscn")
-@onready var bulletspawn = $HEAD_Player/Revolver/Bullet_Spawn
 
 #movement variables
 var gravity = 15
@@ -38,8 +42,11 @@ var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
 
 #camera variables
+
 @export var tilt = true
 @onready var camera = $HEAD_Player/CAMERA_Player
+@onready var shake_fix = $HEAD_Player/ShakeFix
+var initial_rotation : Vector3
 var fov_max = 75
 var base_fov = 75
 var fov
@@ -78,15 +85,32 @@ func _input(ev):
 		if(len(previousinputs) > 20):
 			previousinputs.remove_at(0)
 func _ready():
+	initial_rotation = camera.rotation_degrees
 	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	fov = base_fov
 	
-	
-func _reload():
+func _camera_shake():
+	var x = randf_range(-1.0,1.7)
+	var y = randf_range(-1.0,1.7)
+	var z = randf_range(-1.0,1.7)
+	camera.rotation_degrees = lerp(camera.rotation_degrees, Vector3(x, y, z), 0.5)
+	$HEAD_Player/ShakeFix.start()
+func _reload_scene():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 	
+	
+func _shoot():
+	_camera_shake()
+	instance = bullet_trail.instantiate()
+	if aim_ray.is_colliding():
+		instance.init(bullet_spawn.global_position, aim_ray.get_collision_point())
+		if( aim_ray.get_collider() is enemy):
+			aim_ray.get_collider()._take_damage(1)
+	else:
+		instance.init(bullet_spawn.global_position, aim_ray_end.global_position)
+	get_parent().add_child(instance)
 	
 func _death():
 	get_tree().paused = true
@@ -165,10 +189,7 @@ func _physics_process(delta):
 		
 	
 	if Input.is_action_just_pressed("shoot"):
-		var bullet_object = bullet.instantiate()
-		bullet_object.rotation_degrees = Vector3($HEAD_Player.rotation_degrees.x, rotation_degrees.y, $HEAD_Player.rotation_degrees.z)
-		get_parent().add_child(bullet_object)
-		bullet_object.global_position = bulletspawn.global_position
+		_shoot()
 	
 	if(slide_length <= 0):
 		is_sliding = false
@@ -245,3 +266,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
 	
+
+
+func _on_shake_fix_timeout():
+	camera.rotation_degrees = lerp(camera.rotation_degrees, initial_rotation, 0.5)

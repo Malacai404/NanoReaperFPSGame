@@ -1,6 +1,8 @@
 extends CharacterBody3D
 class_name enemy
 
+signal enemy_hit
+
 var player = null
 
 var health = 5
@@ -24,6 +26,7 @@ var state_machine = null
 @onready var nav_agent = $Enemy_Nav_Agent
 
 func _take_damage(taken_damage):
+	emit_signal("enemy_hit")
 	health -= taken_damage
 
 func _attack_reset():
