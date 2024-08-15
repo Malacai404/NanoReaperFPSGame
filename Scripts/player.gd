@@ -34,6 +34,7 @@ var instance
 
 
 #movement variables
+var input
 var gravity = 15
 var speed = 8
 var jump_speed = 7
@@ -45,12 +46,16 @@ var air_acceleration_multiplier = 0.4
 
 #camera variables
 
+
 @export var tilt = true
 @onready var camera = $HEAD_Player/CAMERA_Player
 @onready var head = $HEAD_Player
 @export var cam_speed : float = 0.001
 @export var cam_rotation_amount : float = 1
 var mouse_input : Vector2
+@onready var weapon_holder = $HEAD_Player/WeaponHolder
+@export var weapon_sway_amount : float = 5
+@export var weapon_rotation_amount : float = 1
 
 #sliding variables
 @export var BOINGACTIVE = false
@@ -126,9 +131,13 @@ func _physics_process(delta):
 	if(dead == true):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
+		
+		
+		
 	velocity.y += -gravity * delta
-	var input = Input.get_vector("left", "right", "forward", "back")
-	
+	input = Input.get_vector("left", "right", "forward", "back")
+	_weapon_tilt(delta)
+	_cam_tilt(delta)
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
 	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
@@ -242,7 +251,7 @@ func _process(delta):
 	else:
 		goofy_menu_object.visible = false
 	# Hud processes
-	void_energy_counter.text = str("Dark Energy:", void_energy_value)
+	void_energy_counter.text = str("Void Energy:", void_energy_value)
 	nanobot_regen_rate_counter.text = str(nanobot_regen_per_second, "/S")
 	nanobot_counter.text = str("Nanobots: ", nanobot_count)
 	nanobot_slider.value = nanobot_count
@@ -258,3 +267,9 @@ func _process(delta):
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
 
+func _cam_tilt(delta):
+	if head:
+		head.rotation.z = lerp(head.rotation.z, -input.x * cam_rotation_amount, 10 * delta)
+func _weapon_tilt(delta):
+	if weapon_holder:
+		weapon_holder.rotation.z = lerp(weapon_holder.rotation.z, -input.x * weapon_rotation_amount, 10 * delta)

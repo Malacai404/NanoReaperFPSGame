@@ -478,6 +478,7 @@ shadow_enabled = true
 [node name="Player" type="CharacterBody3D" parent="level"]
 process_mode = 3
 script = ExtResource("2_mxp76")
+cam_rotation_amount = 0.08
 
 [node name="BEAN_Player" type="MeshInstance3D" parent="level/Player"]
 mesh = SubResource("CapsuleMesh_gk03l")
@@ -529,6 +530,22 @@ offset_bottom = 1073.0
 mouse_filter = 1
 script = ExtResource("6_prntk")
 
+[node name="Crosshair" type="TextureRect" parent="level/Player/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.53, 0.53)
+texture = ExtResource("9_s8t6t")
+
 [node name="HUD_NanobotSlider" type="TextureProgressBar" parent="level/Player/HUD"]
 layout_mode = 0
 offset_left = 47.0
@@ -579,7 +596,7 @@ layout_mode = 0
 offset_left = 37.037
 offset_right = 654.037
 offset_bottom = 146.0
-text = "Dark Energy:"
+text = "Void Energy:"
 label_settings = SubResource("LabelSettings_6pfd7")
 vertical_alignment = 1
 
@@ -647,22 +664,6 @@ offset_right = 1267.0
 offset_bottom = 1050.0
 theme_override_font_sizes/font_size = 131
 text = "Respawn"
-
-[node name="Crosshair" type="TextureRect" parent="level/Player/HUD"]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -32.0
-offset_top = -32.0
-offset_right = 32.0
-offset_bottom = 32.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.53, 0.53)
-texture = ExtResource("9_s8t6t")
 
 [node name="Enemy_Melee" parent="level" instance=ExtResource("9_4xayu")]
 

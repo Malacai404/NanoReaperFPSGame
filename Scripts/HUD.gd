@@ -21,5 +21,5 @@ func _process(delta):
 		hit_cross_time -= delta
 	else:
 		crosshair.texture = cross
-	crosshair.position.x = get_viewport().size.x / 2 - 16
-	crosshair.position.y = get_viewport().size.y / 2 - 16
+	crosshair.global_position.x = get_viewport().size.x / 2
+	crosshair.global_position.y = get_viewport().size.y / 2
