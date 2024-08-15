@@ -23,7 +23,8 @@ var void_energy_value = 200
 @onready var void_energy_counter = $HUD/HUD_VOIDEnergySlider/HUD_VOIDEnergyCount
 
 # Shooting Variables
-
+var damage = 1
+var headshot_multi = 5
 var hit_point = load("res://hit_point.tscn")
 @onready var aim_ray = $HEAD_Player/AimRay
 var bullet_trail = load("res://Prefabs/bullet_trail.tscn")
@@ -100,13 +101,22 @@ func _reload_scene():
 func _shoot():
 	camera._camera_shake()
 	instance = bullet_trail.instantiate()
+	instance.player_object = self
 	if aim_ray.is_colliding():
 		instance.init(bullet_spawn.global_position, aim_ray.get_collision_point())
 		if( aim_ray.get_collider() is enemy):
-			aim_ray.get_collider()._take_damage(1)
+			var collider = aim_ray.get_collider()
+			var i = aim_ray.get_collider_shape()
+			var hit_node = collider.shape_owner_get_owner(i)
+			if(hit_node.name == "HeadCollider"):
+				aim_ray.get_collider()._take_damage(damage * headshot_multi)
+			else:
+				aim_ray.get_collider()._take_damage(damage)
 	else:
 		instance.init(bullet_spawn.global_position, aim_ray_end.global_position)
 	get_parent().add_child(instance)
+	instance.rotation_degrees = rotation_degrees
+	instance.global_position = bullet_spawn.global_position
 	
 func _death():
 	get_tree().paused = true

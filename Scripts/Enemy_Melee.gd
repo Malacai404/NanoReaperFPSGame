@@ -55,7 +55,7 @@ func _process(_delta):
 		queue_free()
 		return
 	velocity = Vector3.ZERO
-	
+	velocity.y -= _delta * 9.8
 	match  state_machine.get_current_node():
 		"run":
 			nav_agent.target_position = player_object.global_transform.origin
