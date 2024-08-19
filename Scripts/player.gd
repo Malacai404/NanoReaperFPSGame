@@ -29,7 +29,7 @@ var hit_point = load("res://hit_point.tscn")
 @onready var aim_ray = $HEAD_Player/AimRay
 var bullet_trail = load("res://Prefabs/bullet_trail.tscn")
 var instance
-@onready var bullet_spawn = $HEAD_Player/WeaponHolder/Revolver/Bullet_Spawn
+@onready var bullet_spawn = $HEAD_Player/WeaponHolder/Revolver/Bullet_spawn
 @onready var aim_ray_end = $HEAD_Player/AimRayEnd
 
 
@@ -48,7 +48,7 @@ var air_acceleration_multiplier = 0.4
 
 
 @export var tilt = true
-@onready var camera = $HEAD_Player/CAMERA_Player
+@onready var camera = $HEAD_Player/RECOIL_HEAD_Player/CAMERA_Player
 @onready var head = $HEAD_Player
 @export var cam_speed : float = 0.001
 @export var cam_rotation_amount : float = 1
@@ -105,7 +105,9 @@ func _reload_scene():
 	
 	
 func _shoot():
-	$HEAD_Player/Gun_Animator.play("shoot")
+	if($HEAD_Player/WeaponHolder/Revolver/AnimationPlayer.is_playing()):
+		return
+	$HEAD_Player/WeaponHolder/Revolver/AnimationPlayer.play("shoot")
 	camera._camera_shake()
 	instance = bullet_trail.instantiate()
 	instance.player_object = self
@@ -175,11 +177,11 @@ func _physics_process(delta):
 	# Tilt process
 	if(tilt == true):
 		if(input.x < 0):
-			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 2.0, 0.2)
+			camera.rotation_degrees.z = lerp(camera.rotation_degrees.z, 2.0, 0.2)
 		elif(input.x > 0):
-			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, -2.0, 0.2)
+			camera.rotation_degrees.z = lerp(camera.rotation_degrees.z, -2.0, 0.2)
 		else:
-			$HEAD_Player/CAMERA_Player.rotation_degrees.z = lerp($HEAD_Player/CAMERA_Player.rotation_degrees.z, 0.0, 0.2)
+			camera.rotation_degrees.z = lerp(camera.rotation_degrees.z, 0.0, 0.2)
 
 			
 	# Slide Process
