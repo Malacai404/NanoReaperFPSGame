@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://tbfk3kr6wutv"]
+[gd_scene load_steps=84 format=3 uid="uid://tbfk3kr6wutv"]
 
 [ext_resource type="Material" uid="uid://dbxdw3tgowpgd" path="res://Materials/prototype_material_gray.tres" id="1_4ei0e"]
 [ext_resource type="Texture2D" uid="uid://ox53rblp5gp6" path="res://Sprites/Prototype Textures/Grey.png" id="2_g6pl5"]
@@ -28,6 +28,68 @@ glow_enabled = true
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_gk03l"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dbxfy"]
+
+[sub_resource type="Animation" id="Animation_vfdej"]
+resource_name = "shott"
+length = 0.307
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HEAD_Player/WeaponHolder/Revolver:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.429617, -0.461155, -0.923183), Vector3(0.43, -0.391, -0.923), Vector3(0.429617, -0.461155, -0.923183)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HEAD_Player/WeaponHolder/Revolver:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, -1.5865, 0), Vector3(3.48787e-16, -1.5865, -0.453786), Vector3(0, -1.5865, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yfv18"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("HEAD_Player/WeaponHolder/Revolver:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.43, -0.291, -0.923)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HEAD_Player/WeaponHolder/Revolver:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -1.5865, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8mxlu"]
+_data = {
+"RESET": SubResource("Animation_yfv18"),
+"shoot": SubResource("Animation_vfdej")
+}
 
 [sub_resource type="LabelSettings" id="LabelSettings_p4wuf"]
 font_size = 86
@@ -478,8 +540,9 @@ shadow_enabled = true
 [node name="Player" type="CharacterBody3D" parent="level"]
 process_mode = 3
 script = ExtResource("2_mxp76")
-cam_rotation_amount = 0.08
-weapon_rotation_amount = 0.04
+cam_rotation_amount = 0.006
+weapon_sway_amount = 0.001
+weapon_rotation_amount = 0.006
 
 [node name="BEAN_Player" type="MeshInstance3D" parent="level/Player"]
 mesh = SubResource("CapsuleMesh_gk03l")
@@ -499,7 +562,7 @@ magnitude = 0.04
 [node name="WeaponHolder" type="Node3D" parent="level/Player/HEAD_Player"]
 
 [node name="Revolver" type="Node3D" parent="level/Player/HEAD_Player/WeaponHolder"]
-transform = Transform3D(-0.000706831, 0, -0.0449944, 0, 0.045, 0, 0.0449944, 0, -0.000706831, 0.429617, -0.461155, -0.923183)
+transform = Transform3D(-0.000706831, 0, -0.0449944, 0, 0.045, 0, 0.0449944, 0, -0.000706831, 0.43, -0.291, -0.923)
 
 [node name="defaultMaterial" type="MeshInstance3D" parent="level/Player/HEAD_Player/WeaponHolder/Revolver"]
 transform = Transform3D(1, 0, 0, 0, 1, -4.37114e-08, 0, 4.37114e-08, 1, 0, 0, 0)
@@ -518,6 +581,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -50)
 
 [node name="Gun_Animator" type="AnimationPlayer" parent="level/Player/HEAD_Player"]
 root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_8mxlu")
+}
 
 [node name="AUDIO_Player" type="AudioStreamPlayer3D" parent="level/Player"]
 stream = ExtResource("3_4equq")

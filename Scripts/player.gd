@@ -56,7 +56,8 @@ var mouse_input : Vector2
 @onready var weapon_holder = $HEAD_Player/WeaponHolder
 @export var weapon_sway_amount : float = 5
 @export var weapon_rotation_amount : float = 1
-
+@onready var def_weapon_holder_pos = weapon_holder.position
+ 
 #sliding variables
 @export var BOINGACTIVE = false
 var BOING = 1
@@ -104,6 +105,7 @@ func _reload_scene():
 	
 	
 func _shoot():
+	$HEAD_Player/Gun_Animator.play("shoot")
 	camera._camera_shake()
 	instance = bullet_trail.instantiate()
 	instance.player_object = self
@@ -120,7 +122,9 @@ func _shoot():
 	else:
 		instance.init(bullet_spawn.global_position, aim_ray_end.global_position)
 	get_parent().add_child(instance)
-	instance.rotation_degrees = rotation_degrees
+	instance.rotation_degrees.y = rotation_degrees.y
+	instance.rotation_degrees.z = head.rotation_degrees.z
+	instance.rotation_degrees.x = head.rotation_degrees.x
 	instance.global_position = bullet_spawn.global_position
 	
 func _death():
@@ -138,6 +142,7 @@ func _physics_process(delta):
 	input = Input.get_vector("left", "right", "forward", "back")
 	_weapon_tilt(delta)
 	_cam_tilt(delta)
+	_weapon_sway(delta)
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
 	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
@@ -273,3 +278,16 @@ func _cam_tilt(delta):
 func _weapon_tilt(delta):
 	if weapon_holder:
 		weapon_holder.rotation.z = lerp(weapon_holder.rotation.z, -input.x * weapon_rotation_amount, 10 * delta)
+
+func _weapon_sway(delta):
+	mouse_input = lerp(mouse_input, Vector2.ZERO, 10 * delta)
+	weapon_holder.rotation.x = lerp(weapon_holder.rotation.x, mouse_input.y * weapon_sway_amount, 10 * delta)
+	weapon_holder.rotation.y = lerp(weapon_holder.rotation.y, mouse_input.x * weapon_sway_amount, 10 * delta)
+
+func _weapon_bob(vel: float, delta):
+	if weapon_holder:
+		if vel > 0:
+			var bob_amount: float = 0.01
+			var bob_freq: float = 0.01
+			weapon_holder.position.y = lerp(weapon_holder.position.y, def_weapon_holder_pos.y, 10 * delta)
+			weapon_holder.position.x = lerp(weapon_holder.position.x, def_weapon_holder_pos.x, 10 * delta)
