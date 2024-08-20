@@ -105,9 +105,9 @@ func _reload_scene():
 	
 	
 func _shoot():
-	if($HEAD_Player/WeaponHolder/Revolver/AnimationPlayer.is_playing()):
+	if($HEAD_Player/WeaponHolder/Revolver/Sketchfab_model/AnimationPlayer.is_playing()):
 		return
-	$HEAD_Player/WeaponHolder/Revolver/AnimationPlayer.play("shoot")
+	$HEAD_Player/WeaponHolder/Revolver/Sketchfab_model/AnimationPlayer.play("shoot")
 	camera._camera_shake()
 	instance = bullet_trail.instantiate()
 	instance.player_object = self
@@ -145,6 +145,7 @@ func _physics_process(delta):
 	_weapon_tilt(delta)
 	_cam_tilt(delta)
 	_weapon_sway(delta)
+	_weapon_bob(velocity.length(), delta)
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
 	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
@@ -288,8 +289,11 @@ func _weapon_sway(delta):
 
 func _weapon_bob(vel: float, delta):
 	if weapon_holder:
-		if vel > 0:
+		if vel > 0.4:
 			var bob_amount: float = 0.01
 			var bob_freq: float = 0.01
+			weapon_holder.position.y = lerp(weapon_holder.position.y, def_weapon_holder_pos.y + sin(Time.get_ticks_msec() * bob_freq) * bob_amount, 10 * delta)
+			weapon_holder.position.x = lerp(weapon_holder.position.x, def_weapon_holder_pos.x + sin(Time.get_ticks_msec() * bob_freq / 2) * bob_amount, 10 * delta)
+		else:
 			weapon_holder.position.y = lerp(weapon_holder.position.y, def_weapon_holder_pos.y, 10 * delta)
 			weapon_holder.position.x = lerp(weapon_holder.position.x, def_weapon_holder_pos.x, 10 * delta)
