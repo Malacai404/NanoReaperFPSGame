@@ -9,13 +9,12 @@ var goofy_menu = false
 @onready var goofy_menu_object = $HUD/HUD_SECRET_Goofy
 #HUD variables
 var dead = false
-var nano_regen_rate = 1
+var nano_regen_rate = 2
 var regen_time = 0.5
 var regen_time_base = regen_time
 var nanobot_regen_per_second = nano_regen_rate / regen_time
 var nanobot_count = 150
 var void_energy_value = 200
-var core_blast_prefab = preload("res://Prefabs/core_blast.tscn")
 
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
@@ -45,6 +44,24 @@ var acceleration = 0.2
 var deceleration: float = 0.2
 var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
+
+
+
+# Ability Variables
+
+var overload_time = 5
+var overload_time_base = overload_time
+
+var overload_delay = 4
+var overload_delay_save = overload_delay
+
+var blast_prefab = preload("res://Prefabs/blast_prefab.tscn")
+var is_charging_blast = false
+var charge_time: float = 1
+var is_overloaded = false
+var blast_delay = 0.4
+var blast_delay_save = blast_delay
+
 
 #camera variables
 
@@ -115,7 +132,7 @@ func _shoot():
 	instance.player_object = self
 	if aim_ray.is_colliding():
 		instance.init(bullet_spawn.global_position, aim_ray.get_collision_point())
-		if( aim_ray.get_collider() is enemy):
+		if( aim_ray.get_collider() is enemy or aim_ray.get_collider() is enemy_soul):
 			var collider = aim_ray.get_collider()
 			var i = aim_ray.get_collider_shape()
 			var hit_node = collider.shape_owner_get_owner(i)
@@ -140,8 +157,55 @@ func _physics_process(delta):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
 		
-		
-		
+	if Input.is_action_just_pressed("overload"):
+		if(void_energy_value >= 75):
+			void_energy_value -= 75
+			is_overloaded = true
+	
+	if(is_overloaded == true):
+		damage = 2
+		slide_force = 17
+		speed = 14
+		dash_force = 50
+	else:
+		damage = 1
+		slide_force = 13
+		speed = 8
+		dash_force = 30
+	
+	blast_delay -= delta
+	if(Input.is_action_pressed("blast")):
+		if(blast_delay <= 0):
+			is_charging_blast = true
+			if($HEAD_Player/WeaponHolder/Revolver_glow.get_active_material(0).albedo_color.a < 0.6):
+				if(void_energy_value > 5):
+					void_energy_value -= round(70 * delta)
+					charge_time += delta
+					$HEAD_Player/WeaponHolder/Revolver_glow.get_active_material(0).albedo_color.a += delta * charge_time
+	if(Input.is_action_just_released("blast") and is_charging_blast):
+		if(charge_time > 0):
+			var blast_object = blast_prefab.instantiate()
+			if aim_ray.is_colliding():
+			
+				if(aim_ray.get_collision_point() != null):
+				
+					blast_object.blast_power = charge_time
+					blast_object.scale_factor = charge_time - 0.5
+					var collider = aim_ray.get_collision_point()
+					blast_object.position = collider
+					get_parent().add_child(blast_object)
+			else:
+			
+				blast_object.scale_factor = charge_time - 0.5
+				blast_object.blast_power = charge_time
+				blast_object.position = aim_ray_end.global_position
+				get_parent().add_child(blast_object)
+		is_charging_blast = false
+		blast_delay = blast_delay_save
+		charge_time = 1
+		if(void_energy_value <= 5):
+			charge_time = 0
+		$HEAD_Player/WeaponHolder/Revolver_glow.get_active_material(0).albedo_color.a = 0
 	velocity.y += -gravity * delta
 	input = Input.get_vector("left", "right", "forward", "back")
 	_weapon_tilt(delta)
@@ -190,11 +254,6 @@ func _physics_process(delta):
 	# Slide Process
 	
 	if(is_sliding == true and slide_length > 0):
-		if(slide_cost_time > 0):
-			slide_cost_time -= delta
-		else:
-			nanobot_count -= slide_cost
-			slide_cost_time = slide_cost_time_base
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
 		velocity.x = slide_start_state.x
@@ -263,8 +322,21 @@ func _process(delta):
 	else:
 		goofy_menu_object.visible = false
 	# Hud processes
+	if(is_overloaded):
+		if($HUD/Overloadlines.modulate.a <= 0):
+			$HUD/HUD_Animator.play("overloadappear")
+		regen_time -= delta
+		overload_time -= delta
+	else:
+		if($HUD/Overloadlines.modulate.a >= 1):
+			$HUD/HUD_Animator.play("overloaddisappear")
+	if(overload_time <= 0):
+		is_overloaded = false
+		overload_time = overload_time_base
+	if(regen_time <= 0):
+		nanobot_count += nano_regen_rate
+		regen_time = regen_time_base
 	void_energy_counter.text = str("Void Energy:", void_energy_value)
-	nanobot_regen_rate_counter.text = str(nanobot_regen_per_second, "/S")
 	nanobot_counter.text = str("Nanobots: ", nanobot_count)
 	nanobot_slider.value = nanobot_count
 	void_energy_slider.value = void_energy_value

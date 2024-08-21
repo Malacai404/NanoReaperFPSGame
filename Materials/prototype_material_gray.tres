@@ -1,7 +1,7 @@
 [gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dbxdw3tgowpgd"]
 
-[ext_resource type="Texture2D" uid="uid://ox53rblp5gp6" path="res://Sprites/Prototype Textures/Grey.png" id="1_u7hd5"]
+[ext_resource type="Texture2D" uid="uid://cx837rf2gqbms" path="res://Sprites/512x512/Stone/Stone_14-512x512.png" id="1_oee4l"]
 
 [resource]
-albedo_texture = ExtResource("1_u7hd5")
+albedo_texture = ExtResource("1_oee4l")
 uv1_scale = Vector3(93.22, 93.22, 92.965)

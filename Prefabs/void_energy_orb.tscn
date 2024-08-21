@@ -1,0 +1,91 @@
+[gd_scene load_steps=7 format=3 uid="uid://dsx48bu55blp6"]
+
+[ext_resource type="Script" path="res://Scripts/void_energy_orb.gd" id="1_ybevc"]
+[ext_resource type="Material" uid="uid://b2qkgfhjubu03" path="res://Materials/void_energy_orb_material.tres" id="2_3xt2r"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vwpq1"]
+radius = 0.3
+
+[sub_resource type="Animation" id="Animation_5rg0o"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("mesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.08165e-12, 1.016, 2.08165e-12)]
+}
+
+[sub_resource type="Animation" id="Animation_hifdr"]
+resource_name = "floating"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("mesh:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(3.48787e-16, 6.28319, 3.48787e-16)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("mesh:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.52612, 0), Vector3(2.08165e-12, 1.016, 2.08165e-12), Vector3(2.08165e-12, 1.53, 2.08165e-12)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4k2is"]
+_data = {
+"RESET": SubResource("Animation_5rg0o"),
+"floating": SubResource("Animation_hifdr")
+}
+
+[node name="void_energy_orb" type="Area3D"]
+script = ExtResource("1_ybevc")
+
+[node name="mesh" type="CSGSphere3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 1.016, 2.08165e-12)
+radius = 0.3
+radial_segments = 10
+rings = 5
+material = ExtResource("2_3xt2r")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52612, 0)
+shape = SubResource("SphereShape3D_vwpq1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_4k2is")
+}
+autoplay = "floating"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

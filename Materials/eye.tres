@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://7srh785dkkdd"]
+
+[ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="1_b05wv"]
+
+[resource]
+albedo_texture = ExtResource("1_b05wv")
+emission_enabled = true
+uv1_scale = Vector3(1.225, 1.225, 1.225)
+uv1_offset = Vector3(-0.12, 0, 0)

@@ -1,6 +1,6 @@
 extends Area3D
 
-var value = 10
+var value = 100
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -10,5 +10,5 @@ func _ready():
 
 func _on_body_entered(body):
 	if body is player:
-		body.nanobot_count += value
+		body.nanobot_count += 10
 		queue_free()

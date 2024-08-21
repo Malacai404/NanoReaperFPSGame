@@ -1,0 +1,107 @@
+[gd_scene load_steps=8 format=3 uid="uid://cdrh5la84ectn"]
+
+[ext_resource type="Script" path="res://Scripts/core_blast_object.gd" id="1_1fi1r"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4rkp7"]
+resource_local_to_scene = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6cx8a"]
+transparency = 1
+albedo_color = Color(1, 1, 0, 0.294118)
+albedo_texture_force_srgb = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_kdn8k"]
+material = SubResource("StandardMaterial3D_6cx8a")
+
+[sub_resource type="Animation" id="Animation_ye74s"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(5.76, 5.76, 5.76)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("blast_collision_shape:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(5.76, 5.76, 5.76)]
+}
+
+[sub_resource type="Animation" id="Animation_5hh2o"]
+resource_name = "explode"
+length = 4.019
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(5.76, 5.76, 5.76), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("blast_collision_shape:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(5.76, 5.76, 5.76), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"_kill"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_575hu"]
+_data = {
+"RESET": SubResource("Animation_ye74s"),
+"explode": SubResource("Animation_5hh2o")
+}
+
+[node name="blast" type="Area3D"]
+script = ExtResource("1_1fi1r")
+
+[node name="blast_collision_shape" type="CollisionShape3D" parent="."]
+transform = Transform3D(5.76, 0, 0, 0, 5.76, 0, 0, 0, 5.76, 0, 0, 0)
+shape = SubResource("SphereShape3D_4rkp7")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.76, 0, 0, 0, 5.76, 0, 0, 0, 5.76, 0, 0, 0)
+mesh = SubResource("SphereMesh_kdn8k")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_575hu")
+}
+autoplay = "explode"
+speed_scale = 9.83

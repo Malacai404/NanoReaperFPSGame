@@ -1,0 +1,180 @@
+[gd_scene load_steps=57 format=3 uid="uid://cyjdbq4qmonnk"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy_Melee_Soul.gd" id="1_dsgtq"]
+[ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="2_0a4u1"]
+[ext_resource type="Texture2D" uid="uid://8imvkhiuesbi" path="res://Sprites/eyes/frame_00_delay-0.1s.png" id="2_extfi"]
+[ext_resource type="Texture2D" uid="uid://wb63by401mgg" path="res://Sprites/eyes/frame_01_delay-0.1s.png" id="3_4bbag"]
+[ext_resource type="Texture2D" uid="uid://bqrmsk61dvjyu" path="res://Sprites/eyes/frame_02_delay-0.1s.png" id="4_5ikh5"]
+[ext_resource type="Texture2D" uid="uid://dvl7toh5ylt6b" path="res://Sprites/eyes/frame_03_delay-0.1s.png" id="5_ltnsr"]
+[ext_resource type="Texture2D" uid="uid://dgetg0neygang" path="res://Sprites/eyes/frame_04_delay-0.1s.png" id="6_q5312"]
+[ext_resource type="Texture2D" uid="uid://crdacp6qkgxry" path="res://Sprites/eyes/frame_05_delay-0.1s.png" id="7_ygslg"]
+[ext_resource type="Texture2D" uid="uid://clseyvv7jxylh" path="res://Sprites/eyes/frame_06_delay-0.1s.png" id="8_tyri1"]
+[ext_resource type="Texture2D" uid="uid://mx1s47pi1lmm" path="res://Sprites/eyes/frame_07_delay-0.1s.png" id="9_osvhv"]
+[ext_resource type="Texture2D" uid="uid://revaqsxk4lnb" path="res://Sprites/eyes/frame_08_delay-0.1s.png" id="10_sl3y2"]
+[ext_resource type="Texture2D" uid="uid://nwsb5rtmcbcp" path="res://Sprites/eyes/frame_09_delay-0.1s.png" id="11_tt247"]
+[ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="12_efkjh"]
+[ext_resource type="Texture2D" uid="uid://orstnn42nx1n" path="res://Sprites/eyes/frame_11_delay-0.1s.png" id="13_j48jr"]
+[ext_resource type="Texture2D" uid="uid://beo4d0ltnqea2" path="res://Sprites/eyes/frame_12_delay-0.1s.png" id="14_e2es4"]
+[ext_resource type="Texture2D" uid="uid://crjqfac5c77yk" path="res://Sprites/eyes/frame_13_delay-0.1s.png" id="15_j4fi3"]
+[ext_resource type="Texture2D" uid="uid://bgtbvl8e5r53a" path="res://Sprites/eyes/frame_14_delay-0.1s.png" id="16_40fio"]
+[ext_resource type="Texture2D" uid="uid://dqqnpcnnfdrv7" path="res://Sprites/eyes/frame_15_delay-0.1s.png" id="17_xy016"]
+[ext_resource type="Texture2D" uid="uid://b7r6ra1kiq2lw" path="res://Sprites/eyes/frame_16_delay-0.1s.png" id="18_3anpe"]
+[ext_resource type="Texture2D" uid="uid://ck42y8u756ysy" path="res://Sprites/eyes/frame_17_delay-0.1s.png" id="19_8dpkg"]
+[ext_resource type="Texture2D" uid="uid://dhcm6pgi0q36p" path="res://Sprites/eyes/frame_18_delay-0.1s.png" id="20_flbvj"]
+[ext_resource type="Texture2D" uid="uid://s654bqoy0mq6" path="res://Sprites/eyes/frame_19_delay-0.1s.png" id="21_wdc31"]
+[ext_resource type="Texture2D" uid="uid://h8vew7dxpqb1" path="res://Sprites/eyes/frame_20_delay-0.1s.png" id="22_mjv3v"]
+[ext_resource type="Texture2D" uid="uid://dmri1updihs18" path="res://Sprites/eyes/frame_21_delay-0.1s.png" id="23_wu8ua"]
+[ext_resource type="Texture2D" uid="uid://cqqgdqccdb2kg" path="res://Sprites/eyes/frame_22_delay-0.1s.png" id="24_01ndv"]
+[ext_resource type="Texture2D" uid="uid://d2ajcgbggkkvi" path="res://Sprites/eyes/frame_23_delay-0.1s.png" id="25_j4g32"]
+[ext_resource type="Texture2D" uid="uid://cgdt5ueveh6l3" path="res://Sprites/eyes/frame_24_delay-0.1s.png" id="26_1iel4"]
+[ext_resource type="Texture2D" uid="uid://di6j2sfq2qfyp" path="res://Sprites/eyes/frame_25_delay-0.1s.png" id="27_c51qw"]
+[ext_resource type="Texture2D" uid="uid://c4qvt00elhfxh" path="res://Sprites/eyes/frame_26_delay-0.1s.png" id="28_cb1fk"]
+[ext_resource type="Texture2D" uid="uid://bep0wmbiduona" path="res://Sprites/eyes/frame_27_delay-0.1s.png" id="29_8y4t4"]
+[ext_resource type="Texture2D" uid="uid://bmdwidr75at4c" path="res://Sprites/eyes/frame_28_delay-0.1s.png" id="30_iu7ki"]
+[ext_resource type="Texture2D" uid="uid://tosqcb42pbf3" path="res://Sprites/eyes/frame_29_delay-0.1s.png" id="31_aohax"]
+[ext_resource type="Texture2D" uid="uid://rgjdi2occ4xa" path="res://Sprites/eyes/frame_30_delay-0.1s.png" id="32_j1ymq"]
+[ext_resource type="Texture2D" uid="uid://ceyx38mi7xmvt" path="res://Sprites/eyes/frame_31_delay-0.1s.png" id="33_66n87"]
+[ext_resource type="Texture2D" uid="uid://bro68qu4qlaqk" path="res://Sprites/eyes/frame_32_delay-0.1s.png" id="34_787yq"]
+[ext_resource type="Texture2D" uid="uid://dgek2ifsr64me" path="res://Sprites/eyes/frame_33_delay-0.1s.png" id="35_dgyh5"]
+[ext_resource type="Texture2D" uid="uid://cddsn83biwi3s" path="res://Sprites/eyes/frame_34_delay-0.1s.png" id="36_bdugm"]
+[ext_resource type="Texture2D" uid="uid://ch3glo27wkpys" path="res://Sprites/eyes/frame_35_delay-0.1s.png" id="37_a4ite"]
+[ext_resource type="Texture2D" uid="uid://c7pey41q6kglw" path="res://Sprites/eyes/frame_36_delay-0.1s.png" id="38_c4c1a"]
+[ext_resource type="Texture2D" uid="uid://b4yg8s7hwjp6c" path="res://Sprites/eyes/frame_37_delay-0.1s.png" id="39_cy1cb"]
+[ext_resource type="Texture2D" uid="uid://p8loq6vallgb" path="res://Sprites/eyes/frame_38_delay-0.1s.png" id="40_03wn2"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ylwtu"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5uki0"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_do1kb"]
+material = ExtResource("2_0a4u1")
+
+[sub_resource type="Animation" id="Animation_wuny8"]
+resource_name = "eye_move"
+length = 3.9
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:albedo_texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8, 1.9, 2, 2.1, 2.2, 2.3, 2.4, 2.5, 2.6, 2.7, 2.8, 2.9, 3, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_extfi"), ExtResource("3_4bbag"), ExtResource("4_5ikh5"), ExtResource("5_ltnsr"), ExtResource("6_q5312"), ExtResource("7_ygslg"), ExtResource("8_tyri1"), ExtResource("9_osvhv"), ExtResource("10_sl3y2"), ExtResource("11_tt247"), ExtResource("12_efkjh"), ExtResource("13_j48jr"), ExtResource("14_e2es4"), ExtResource("15_j4fi3"), ExtResource("16_40fio"), ExtResource("17_xy016"), ExtResource("18_3anpe"), ExtResource("19_8dpkg"), ExtResource("20_flbvj"), ExtResource("21_wdc31"), ExtResource("22_mjv3v"), ExtResource("23_wu8ua"), ExtResource("24_01ndv"), ExtResource("25_j4g32"), ExtResource("26_1iel4"), ExtResource("27_c51qw"), ExtResource("28_cb1fk"), ExtResource("29_8y4t4"), ExtResource("30_iu7ki"), ExtResource("31_aohax"), ExtResource("32_j1ymq"), ExtResource("33_66n87"), ExtResource("34_787yq"), ExtResource("35_dgyh5"), ExtResource("36_bdugm"), ExtResource("37_a4ite"), ExtResource("38_c4c1a"), ExtResource("39_cy1cb"), ExtResource("40_03wn2")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6ktqx"]
+_data = {
+"eye_move": SubResource("Animation_wuny8")
+}
+
+[sub_resource type="Animation" id="Animation_aqrh0"]
+resource_name = "run"
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_apctk"]
+resource_name = "attack"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:mesh:material:emission")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 1), Color(0.254902, 0, 0, 1), Color(0, 0, 0, 1)]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [],
+"method": &"_attack"
+}, {
+"args": [],
+"method": &"_attack_reset"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_cxh0w"]
+length = 0.001
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_esgv3"]
+_data = {
+"RESET": SubResource("Animation_cxh0w"),
+"attack": SubResource("Animation_apctk"),
+"run": SubResource("Animation_aqrh0")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4nmu1"]
+animation = &"attack"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_gols1"]
+animation = &"run"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3c8r"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c7ik3"]
+advance_mode = 2
+advance_condition = &"attack"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_072mn"]
+advance_mode = 2
+advance_condition = &"run"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_lkqix"]
+states/attack/node = SubResource("AnimationNodeAnimation_4nmu1")
+states/attack/position = Vector2(655, 107)
+states/run/node = SubResource("AnimationNodeAnimation_gols1")
+states/run/position = Vector2(373, 90)
+transitions = ["Start", "run", SubResource("AnimationNodeStateMachineTransition_q3c8r"), "run", "attack", SubResource("AnimationNodeStateMachineTransition_c7ik3"), "attack", "run", SubResource("AnimationNodeStateMachineTransition_072mn")]
+
+[node name="enemy_melee_soul" type="CharacterBody3D"]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, 0, 0, 0)
+script = ExtResource("1_dsgtq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ylwtu")
+
+[node name="HeadCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0366723, 1.16325, -0.301663)
+shape = SubResource("SphereShape3D_5uki0")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_do1kb")
+
+[node name="Eye_Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6ktqx")
+}
+autoplay = "eye_move"
+
+[node name="Character_Animator" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_esgv3")
+}
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_lkqix")
+anim_player = NodePath("../Character_Animator")
+parameters/conditions/attack = false
+parameters/conditions/run = false
+
+[node name="Enemy_Nav_Agent" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+radius = 4.0
