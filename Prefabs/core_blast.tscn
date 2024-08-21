@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://cmelyjohwcupa"]
+
+[ext_resource type="Script" path="res://Scripts/core_blast.gd" id="1_yxpek"]
+[ext_resource type="Material" uid="uid://bnw63d0endn4" path="res://Materials/prototype_material_red.tres" id="2_kx8m1"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vwpq1"]
+radius = 0.3
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_5mt8d"]
+radius = 3.0
+
+[node name="core_blast" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.52612, 0)
+collision_layer = 2
+collision_mask = 2
+gravity_scale = 1.66533e-16
+max_contacts_reported = 1
+contact_monitor = true
+script = ExtResource("1_yxpek")
+
+[node name="mesh" type="CSGSphere3D" parent="."]
+radius = 0.3
+radial_segments = 10
+rings = 5
+material = ExtResource("2_kx8m1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_vwpq1")
+
+[node name="blast_radius" type="Area3D" parent="."]
+
+[node name="blast_collision" type="CollisionShape3D" parent="blast_radius"]
+shape = SubResource("SphereShape3D_5mt8d")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

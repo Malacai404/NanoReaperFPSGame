@@ -15,6 +15,8 @@ var regen_time_base = regen_time
 var nanobot_regen_per_second = nano_regen_rate / regen_time
 var nanobot_count = 150
 var void_energy_value = 200
+var core_blast_prefab = preload("res://Prefabs/core_blast.tscn")
+
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
 @onready var void_energy_slider = $HUD/HUD_VOIDEnergySlider
@@ -232,6 +234,8 @@ func _physics_process(delta):
 	else:
 		is_dashing = false
 	
+	
+	
 	if Input.is_action_just_pressed("dash") and dash_length <= 0 and dash_delay <= 0 and is_sliding == false:
 		if(void_energy_value >= 0+ dash_cost):
 			void_energy_value -= dash_cost
@@ -274,6 +278,9 @@ func _process(delta):
 
 	if Input.is_action_just_pressed("quick_exit"):
 		get_tree().quit()
+
+func _return_direction(loc: Vector3):
+	return position.direction_to(loc)
 
 func _cam_tilt(delta):
 	if head:

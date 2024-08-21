@@ -29,6 +29,10 @@ func _take_damage(taken_damage):
 	emit_signal("enemy_hit")
 	health -= taken_damage
 
+
+func _return_direction(loc: Vector3):
+	return position.direction_to(loc)
+
 func _attack_reset():
 	if(!_target_in_range()):
 		attacking = false
@@ -54,17 +58,17 @@ func _process(_delta):
 		get_parent().add_child(nanobot_orb_object)
 		queue_free()
 		return
-	velocity = Vector3.ZERO
-	velocity.y -= _delta * 9.8
 	match  state_machine.get_current_node():
 		"run":
-			nav_agent.target_position = player_object.global_transform.origin
-			var next_nav_point = nav_agent.get_next_path_position()
-			velocity = (next_nav_point - global_transform.origin).normalized() * speed
-			look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
+			if(is_on_floor()):
+				nav_agent.target_position = player_object.global_transform.origin
+				var next_nav_point = nav_agent.get_next_path_position()
+				velocity = lerp(velocity, ((next_nav_point - global_transform.origin).normalized() * speed), 0.5)
+				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
+			velocity = Vector3.ZERO
 			look_at(Vector3(player_object.global_position.x, global_position.y, player_object.global_position.z), Vector3.UP)
-
+	velocity.y -= _delta * 9.8
 	anim_tree.set("parameters/conditions/attack", _target_in_range())
 	anim_tree.set("parameters/conditions/run", !attacking)
 	
