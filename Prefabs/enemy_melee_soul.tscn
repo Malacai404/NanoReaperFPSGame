@@ -71,9 +71,8 @@ _data = {
 "eye_move": SubResource("Animation_wuny8")
 }
 
-[sub_resource type="Animation" id="Animation_aqrh0"]
-resource_name = "run"
-loop_mode = 1
+[sub_resource type="Animation" id="Animation_cxh0w"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_apctk"]
 resource_name = "attack"
@@ -108,8 +107,9 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_cxh0w"]
-length = 0.001
+[sub_resource type="Animation" id="Animation_aqrh0"]
+resource_name = "run"
+loop_mode = 1
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_esgv3"]
 _data = {
