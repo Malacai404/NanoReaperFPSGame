@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://cdrh5la84ectn"]
+[gd_scene load_steps=8 format=3 uid="uid://c51xaoritvfrh"]
 
 [ext_resource type="Script" path="res://Scripts/core_blast_object.gd" id="1_1fi1r"]
 
@@ -9,6 +9,8 @@ resource_local_to_scene = true
 transparency = 1
 albedo_color = Color(1, 1, 0, 0.294118)
 albedo_texture_force_srgb = true
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_kdn8k"]
 material = SubResource("StandardMaterial3D_6cx8a")

@@ -93,8 +93,7 @@ func _process(_delta):
 		nanobot_orb_object.value = 10
 		get_parent().add_child(nanobot_orb_object)
 		health = 3
-		position = Vector3(randf_range(-25,25), 0.2, randf_range(-25,25))
-		dead = false
+		queue_free()
 	match  state_machine.get_current_node():
 		"run":
 			if(is_on_floor() and is_moving):
