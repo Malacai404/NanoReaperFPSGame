@@ -228,6 +228,8 @@ func _physics_process(delta):
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration)
 	else:
+		if(Input.is_action_just_pressed("slide")):
+			velocity.y = -gravity
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration * air_acceleration_multiplier)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration * air_acceleration_multiplier)
