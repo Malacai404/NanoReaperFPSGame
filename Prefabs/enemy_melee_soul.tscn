@@ -1,7 +1,7 @@
-[gd_scene load_steps=57 format=3 uid="uid://cyjdbq4qmonnk"]
+[gd_scene load_steps=57 format=3 uid="uid://qe2plfbdqp84"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_Melee_Soul.gd" id="1_dsgtq"]
-[ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="2_0a4u1"]
+[ext_resource type="Material" uid="uid://0w5glal30tj8" path="res://Materials/eye.tres" id="2_0a4u1"]
 [ext_resource type="Texture2D" uid="uid://8imvkhiuesbi" path="res://Sprites/eyes/frame_00_delay-0.1s.png" id="2_extfi"]
 [ext_resource type="Texture2D" uid="uid://wb63by401mgg" path="res://Sprites/eyes/frame_01_delay-0.1s.png" id="3_4bbag"]
 [ext_resource type="Texture2D" uid="uid://bqrmsk61dvjyu" path="res://Sprites/eyes/frame_02_delay-0.1s.png" id="4_5ikh5"]
@@ -45,6 +45,7 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ylwtu"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_5uki0"]
+radius = 0.32
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_do1kb"]
 material = ExtResource("2_0a4u1")
@@ -151,7 +152,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_ylwtu")
 
 [node name="HeadCollider" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0366723, 1.16325, -0.301663)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0366723, 1.30327, -0.401775)
 shape = SubResource("SphereShape3D_5uki0")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

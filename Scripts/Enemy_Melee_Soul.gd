@@ -58,6 +58,7 @@ func _attack_reset():
 func _attack():
 	movement_length = 1
 	if(_target_in_range()):
+		player_object._take_damage()
 		player_object.nanobot_count -= 10
 	
 

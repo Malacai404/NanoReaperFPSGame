@@ -10,5 +10,6 @@ func _ready():
 
 func _on_body_entered(body):
 	if body is player:
-		body.void_energy_value += 50
-		queue_free()
+		if body.void_energy_value < 250:
+			body.void_energy_value += 50
+			queue_free()

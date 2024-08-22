@@ -118,6 +118,10 @@ func _ready():
 	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
+	
+func _take_damage():
+	$HUD/HUD_Static_Animator.play("static_flash")
+
 func _reload_scene():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
@@ -213,6 +217,8 @@ func _physics_process(delta):
 	_weapon_sway(delta)
 	_weapon_bob(velocity.length(), delta)
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
+	if(Input.is_action_just_pressed("left")):
+		print("Holy Sea")
 	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
@@ -313,6 +319,11 @@ func _physics_process(delta):
 
 func _process(delta):
 	
+	
+	
+	if(void_energy_value > 250):
+		void_energy_value = 250
+	
 	# Secret processes
 	if(previousinputs == konamicode):
 		goofy_menu = true
@@ -341,6 +352,7 @@ func _process(delta):
 	nanobot_slider.value = nanobot_count
 	void_energy_slider.value = void_energy_value
 	if(dead == true):
+		$HUD/Static_Effect.modulate.a = 0.8
 		$HUD/Death_Screen.visible = true
 	
 	# Value processes
