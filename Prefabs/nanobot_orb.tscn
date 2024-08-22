@@ -68,7 +68,8 @@ _data = {
 "floating": SubResource("Animation_hifdr")
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_x7uia"]
+[sub_resource type="SphereShape3D" id="SphereShape3D_d3r5h"]
+radius = 0.345
 
 [node name="Nanobot_orb" type="Area3D"]
 script = ExtResource("1_71u2p")
@@ -91,9 +92,8 @@ libraries = {
 autoplay = "floating"
 
 [node name="GroundDetect" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.240627, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GroundDetect"]
-shape = SubResource("SphereShape3D_x7uia")
+shape = SubResource("SphereShape3D_d3r5h")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

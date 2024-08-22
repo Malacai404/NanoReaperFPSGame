@@ -62,6 +62,11 @@ func _ready():
 	
 	
 func _process(_delta):
+	for i in $Enemy_Checker.get_overlapping_bodies():
+		if i is enemy or i is enemy_soul:
+			if(i.name != self.name):
+				var veloc = randf_range(-2,2)
+				velocity.x += veloc
 	if(damage_timer >= 0):
 		damage_timer -= _delta
 	else:
@@ -78,23 +83,30 @@ func _process(_delta):
 		queue_free()
 		dead = false
 	match  state_machine.get_current_node():
+		"falling":
+			if(is_on_floor() == false):
+				velocity.y -= 9 * _delta
 		"run":
-			if(is_on_floor()):
-				velocitylocked = false
-				nav_agent.target_position = player_object.global_transform.origin
-				var next_nav_point = nav_agent.get_next_path_position()
-				velocity = lerp(velocity, ((next_nav_point - global_transform.origin).normalized() * speed), 0.5)
-				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
+			velocitylocked = false
+			nav_agent.target_position = player_object.global_transform.origin
+			var next_nav_point = nav_agent.get_next_path_position()
+			var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+			var nav = Vector3(fakenav.x, 0, fakenav.z)
+			velocity = lerp(velocity, nav, 0.5)
+			look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
 			if(velocitylocked == false):
 				velocity = lerp(velocity, Vector3.ZERO, 0.5)
 			else:
 				attacking = false
 			look_at(Vector3(player_object.global_position.x, global_position.y, player_object.global_position.z), Vector3.UP)
-	velocity.y -= _delta * 9.8
+	if(is_on_floor() == false):
+		velocity.y -= 9 * _delta
 	anim_tree.set("parameters/conditions/attack", _target_in_range())
 	anim_tree.set("parameters/conditions/run", !attacking)
-	
+	anim_tree.set("parameters/conditions/falling", !is_on_floor())
+	if(!is_on_floor()):
+		anim_tree.set("parameters/conditions/run", false)
 	if(_target_in_range()):
 		attacking = true
 	

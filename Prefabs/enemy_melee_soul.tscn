@@ -1,7 +1,7 @@
-[gd_scene load_steps=57 format=3 uid="uid://qe2plfbdqp84"]
+[gd_scene load_steps=58 format=3 uid="uid://cyjdbq4qmonnk"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_Melee_Soul.gd" id="1_dsgtq"]
-[ext_resource type="Material" uid="uid://0w5glal30tj8" path="res://Materials/eye.tres" id="2_0a4u1"]
+[ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="2_0a4u1"]
 [ext_resource type="Texture2D" uid="uid://8imvkhiuesbi" path="res://Sprites/eyes/frame_00_delay-0.1s.png" id="2_extfi"]
 [ext_resource type="Texture2D" uid="uid://wb63by401mgg" path="res://Sprites/eyes/frame_01_delay-0.1s.png" id="3_4bbag"]
 [ext_resource type="Texture2D" uid="uid://bqrmsk61dvjyu" path="res://Sprites/eyes/frame_02_delay-0.1s.png" id="4_5ikh5"]
@@ -143,6 +143,9 @@ states/run/node = SubResource("AnimationNodeAnimation_gols1")
 states/run/position = Vector2(373, 90)
 transitions = ["Start", "run", SubResource("AnimationNodeStateMachineTransition_q3c8r"), "run", "attack", SubResource("AnimationNodeStateMachineTransition_c7ik3"), "attack", "run", SubResource("AnimationNodeStateMachineTransition_072mn")]
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_lk170"]
+radius = 0.365
+
 [node name="enemy_melee_soul" type="CharacterBody3D"]
 transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, 0, 0, 0)
 script = ExtResource("1_dsgtq")
@@ -179,3 +182,8 @@ parameters/conditions/run = false
 [node name="Enemy_Nav_Agent" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
 radius = 4.0
+
+[node name="Enemy_Checker" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy_Checker"]
+shape = SubResource("SphereShape3D_lk170")

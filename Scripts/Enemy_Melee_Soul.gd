@@ -70,7 +70,11 @@ func _ready():
 	
 	
 func _process(_delta):
-	
+	for i in $Enemy_Checker.get_overlapping_bodies():
+		if i is enemy or i is enemy_soul:
+			if(i.name != self.name):
+				var veloc = randf_range(-2,2)
+				velocity.x += veloc
 	if(is_moving == false):
 		movement_length += _delta
 		if(movement_length >= 1):
@@ -100,10 +104,12 @@ func _process(_delta):
 				velocitylocked = false
 				nav_agent.target_position = player_object.global_transform.origin
 				var next_nav_point = nav_agent.get_next_path_position()
-				velocity = lerp(velocity, ((next_nav_point - global_transform.origin).normalized() * speed), 0.5)
+				var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+				var nav = Vector3(fakenav.x, 0, fakenav.z)
+				velocity = lerp(velocity, nav, 0.5)
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 			elif(is_moving == false):
-				velocity = lerp(velocity, Vector3.ZERO, 0.5)
+				velocity = lerp(velocity, Vector3(0, velocity.y - 9.8 * _delta, 0), 0.5)
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
 			if(velocitylocked == false):
