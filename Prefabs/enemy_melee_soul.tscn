@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://cyjdbq4qmonnk"]
+[gd_scene load_steps=60 format=3 uid="uid://cyjdbq4qmonnk"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_Melee_Soul.gd" id="1_dsgtq"]
 [ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="2_0a4u1"]
@@ -41,6 +41,8 @@
 [ext_resource type="Texture2D" uid="uid://c7pey41q6kglw" path="res://Sprites/eyes/frame_36_delay-0.1s.png" id="38_c4c1a"]
 [ext_resource type="Texture2D" uid="uid://b4yg8s7hwjp6c" path="res://Sprites/eyes/frame_37_delay-0.1s.png" id="39_cy1cb"]
 [ext_resource type="Texture2D" uid="uid://p8loq6vallgb" path="res://Sprites/eyes/frame_38_delay-0.1s.png" id="40_03wn2"]
+[ext_resource type="AudioStream" uid="uid://ct4jxd4s32qt8" path="res://Audio/soul_enemy_noise.mp3" id="42_e5pd6"]
+[ext_resource type="AudioStream" uid="uid://lucuo1sjkgtf" path="res://Audio/soul_enemy_attack.mp3" id="43_bcj0c"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ylwtu"]
 
@@ -48,6 +50,7 @@
 radius = 0.32
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_do1kb"]
+resource_local_to_scene = true
 material = ExtResource("2_0a4u1")
 
 [sub_resource type="Animation" id="Animation_wuny8"]
@@ -187,3 +190,11 @@ radius = 4.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy_Checker"]
 shape = SubResource("SphereShape3D_lk170")
+
+[node name="Noise_player" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("42_e5pd6")
+volume_db = -30.71
+autoplay = true
+
+[node name="Audio_player" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource("43_bcj0c")

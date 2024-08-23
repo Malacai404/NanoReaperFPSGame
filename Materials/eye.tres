@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="1_b05wv"]
 
 [resource]
+resource_local_to_scene = true
 albedo_texture = ExtResource("1_b05wv")
 emission_enabled = true
 uv1_scale = Vector3(1.225, 1.225, 1.225)

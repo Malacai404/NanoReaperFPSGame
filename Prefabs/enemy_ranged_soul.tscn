@@ -1,0 +1,182 @@
+[gd_scene load_steps=26 format=3 uid="uid://c8b4k62c2f84t"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy_Ranged_Soul.gd" id="1_j3rxd"]
+[ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="2_t65hv"]
+[ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="3_ntnhw"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtauu"]
+radius = 0.33
+height = 1.42825
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gopka"]
+radius = 0.236458
+height = 0.487054
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ea78r"]
+animation = &"fall"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_e3co5"]
+animation = &"shoot"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vwx6a"]
+animation = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ybkkh"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dr7pq"]
+advance_mode = 2
+advance_condition = &"falling"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5m7yb"]
+advance_mode = 2
+advance_condition = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6j8il"]
+advance_mode = 2
+advance_condition = &"shoot"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nb475"]
+advance_mode = 2
+advance_condition = &"walk"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rkd12"]
+advance_mode = 2
+advance_condition = &"shoot"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dpii1"]
+advance_mode = 2
+advance_condition = &"falling"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_amx2s"]
+states/Start/position = Vector2(201, 100)
+states/fall/node = SubResource("AnimationNodeAnimation_ea78r")
+states/fall/position = Vector2(482.745, 60)
+states/shoot/node = SubResource("AnimationNodeAnimation_e3co5")
+states/shoot/position = Vector2(502.745, 136)
+states/walk/node = SubResource("AnimationNodeAnimation_vwx6a")
+states/walk/position = Vector2(371.745, 92)
+transitions = ["Start", "walk", SubResource("AnimationNodeStateMachineTransition_ybkkh"), "walk", "fall", SubResource("AnimationNodeStateMachineTransition_dr7pq"), "fall", "walk", SubResource("AnimationNodeStateMachineTransition_5m7yb"), "walk", "shoot", SubResource("AnimationNodeStateMachineTransition_6j8il"), "shoot", "walk", SubResource("AnimationNodeStateMachineTransition_nb475"), "fall", "shoot", SubResource("AnimationNodeStateMachineTransition_rkd12"), "shoot", "fall", SubResource("AnimationNodeStateMachineTransition_dpii1")]
+graph_offset = Vector2(2.74506, 0)
+
+[sub_resource type="Animation" id="Animation_thcwq"]
+resource_name = "Armature|mixamo_com|Layer0"
+length = 4.53333
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_p4og7"]
+resource_name = "Armature_001|mixamo_com|Layer0"
+length = 1.3
+loop_mode = 1
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.6, 1.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"values": [{
+"args": [],
+"method": &"_start_shooting"
+}, {
+"args": [],
+"method": &"_shoot"
+}, {
+"args": [],
+"method": &"_shoot_reset"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_5nak6"]
+resource_name = "Armature_002|mixamo_com|Layer0"
+length = 0.9
+loop_mode = 1
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_l0408"]
+_data = {
+"fall": SubResource("Animation_thcwq"),
+"shoot": SubResource("Animation_p4og7"),
+"walk": SubResource("Animation_5nak6")
+}
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xig2h"]
+radius = 0.165
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v43ac"]
+resource_local_to_scene = true
+albedo_texture = ExtResource("2_t65hv")
+emission_enabled = true
+uv1_scale = Vector3(1.225, 1.225, 1.225)
+uv1_offset = Vector3(-0.12, 0, 0)
+
+[sub_resource type="PrismMesh" id="PrismMesh_rf8ef"]
+material = SubResource("StandardMaterial3D_v43ac")
+left_to_right = 0.2
+
+[sub_resource type="PrismMesh" id="PrismMesh_fnfy8"]
+material = SubResource("StandardMaterial3D_v43ac")
+left_to_right = 0.7
+
+[sub_resource type="SphereMesh" id="SphereMesh_725g3"]
+material = ExtResource("3_ntnhw")
+
+[node name="Enemy_Ranged_Soul" type="CharacterBody3D"]
+script = ExtResource("1_j3rxd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00434351, 0.752839, -0.0202732)
+shape = SubResource("CapsuleShape3D_mtauu")
+
+[node name="HeadCollider" type="CollisionShape3D" parent="."]
+transform = Transform3D(0.997576, 0.0695824, 0, -0.0695824, 0.997576, 0, 0, 0, 1, 0.00434351, 0.584317, 0.186141)
+shape = SubResource("CapsuleShape3D_gopka")
+
+[node name="Enemy_Nav_Agent" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+radius = 4.0
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource("AnimationNodeStateMachine_amx2s")
+anim_player = NodePath("../AnimationPlayer")
+parameters/conditions/falling = false
+parameters/conditions/shoot = false
+parameters/conditions/walk = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_l0408")
+}
+
+[node name="Enemy_Checker" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy_Checker"]
+shape = SubResource("SphereShape3D_xig2h")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.385, 0)
+target_position = Vector3(0, 0, -20)
+
+[node name="BulletSpawn" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30196, -0.843101)
+
+[node name="Mesh" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh"]
+transform = Transform3D(0.54, 0, 0, 0, 0.54, 0, 0, 0, 0.54, 0, 0.266, -0.048)
+mesh = SubResource("PrismMesh_rf8ef")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Mesh"]
+transform = Transform3D(-0.378491, 0, -0.385155, 0, 0.54, 0, 0.385155, 0, -0.378491, 0.0114137, 0.624291, 0.0281463)
+mesh = SubResource("PrismMesh_fnfy8")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Mesh"]
+transform = Transform3D(-0.8, 0, 6.99382e-08, 0, 0.8, 0, -6.99382e-08, 0, -0.8, 0.0114137, 1.1101, 0.0281463)
+mesh = SubResource("SphereMesh_725g3")
+skeleton = NodePath("../..")

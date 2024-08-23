@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://2xpbpp37wvqd"]
+
+[ext_resource type="Script" path="res://Scripts/enemy_bullet.gd" id="1_gfoxd"]
+[ext_resource type="Texture2D" uid="uid://bq0w1eaq0rwsg" path="res://Sprites/Prototype Textures/purple 3.png" id="1_ypwoa"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7l81v"]
+albedo_texture = ExtResource("1_ypwoa")
+emission_enabled = true
+emission = Color(0.6, 0.109804, 0.580392, 1)
+uv1_scale = Vector3(4.45, 1, 1)
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_vwpq1"]
+radius = 0.3
+
+[node name="bullet" type="Area3D"]
+transform = Transform3D(0.325, 0, 0, 0, 0.325, 0, 0, 0, 0.325, 0, 0, 0)
+script = ExtResource("1_gfoxd")
+
+[node name="mesh" type="CSGSphere3D" parent="."]
+radius = 0.3
+radial_segments = 10
+rings = 5
+material = SubResource("StandardMaterial3D_7l81v")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_vwpq1")

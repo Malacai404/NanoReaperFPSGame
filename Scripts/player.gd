@@ -19,9 +19,15 @@ var void_energy_value = 200
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
 @onready var void_energy_slider = $HUD/HUD_VOIDEnergySlider
-@onready var nanobot_regen_rate_counter = $HUD/HUD_NanobotSlider/HUD_NanobotRegenRate
 @onready var nanobot_counter = $HUD/HUD_NanobotSlider/HUD_NanobotCount
 @onready var void_energy_counter = $HUD/HUD_VOIDEnergySlider/HUD_VOIDEnergyCount
+
+
+#Audio variables
+@onready var audio = $AUDIO_Player
+var gunshot_noise = preload("res://Audio/gunshot.mp3")
+
+
 
 # Shooting Variables
 var damage = 1
@@ -45,12 +51,18 @@ var deceleration: float = 0.2
 var air_deceleration_multiplier = 0.4
 var air_acceleration_multiplier = 0.4
 
-
+@export var step_delay =0.2
+@export var step_delay_save = step_delay
 
 # Ability Variables
 
+var shockwave_prefab = preload("res://Prefabs/shockwave.tscn")
+
 var overload_time = 5
 var overload_time_base = overload_time
+
+var shockwave_delay = 2
+var shockwave_delay_save = shockwave_delay
 
 var overload_delay = 4
 var overload_delay_save = overload_delay
@@ -115,6 +127,7 @@ func _input(event):
 		if(len(previousinputs) > 20):
 			previousinputs.remove_at(0)
 func _ready():
+	shockwave_delay = 0
 	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
@@ -128,15 +141,19 @@ func _reload_scene():
 	
 	
 func _shoot():
+
 	if($HEAD_Player/WeaponHolder/Revolver/Sketchfab_model/AnimationPlayer.is_playing()):
 		return
 	$HEAD_Player/WeaponHolder/Revolver/Sketchfab_model/AnimationPlayer.play("shoot")
+	audio.pitch_scale = randf_range(0.95,1.1)
+	audio.stream = gunshot_noise
+	audio.play()
 	camera._camera_shake()
 	instance = bullet_trail.instantiate()
 	instance.player_object = self
 	if aim_ray.is_colliding():
 		instance.init(bullet_spawn.global_position, aim_ray.get_collision_point())
-		if( aim_ray.get_collider() is enemy or aim_ray.get_collider() is enemy_soul):
+		if( aim_ray.get_collider() is enemy or aim_ray.get_collider() is enemy_soul or aim_ray.get_collider() is enemy_ranged_robot or aim_ray.get_collider() is enemy_ranged_soul):
 			var collider = aim_ray.get_collider()
 			var i = aim_ray.get_collider_shape()
 			var hit_node = collider.shape_owner_get_owner(i)
@@ -219,12 +236,31 @@ func _physics_process(delta):
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
 	if(Input.is_action_just_pressed("left")):
 		print("Holy Sea")
+	if(shockwave_delay > 0):
+		shockwave_delay -= delta
+	if(Input.is_action_just_pressed("shockwave") and is_on_floor() and shockwave_delay <= 0):
+		if(void_energy_value >= 50):
+			void_energy_value -= 50
+		else:
+			return
+		var shockwave_object = shockwave_prefab.instantiate()
+		shockwave_object.global_position = global_position
+		get_parent().add_child(shockwave_object)
+		velocity.y = gravity
+		shockwave_delay = shockwave_delay_save
 	#movement code (DO NOT TOUCH)
 	if(is_on_floor()):
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
+			if($AUDIO_Walking.playing == false and step_delay <= 0):
+				$AUDIO_Walking.pitch_scale = randf_range(0.95,1.15)
+				$AUDIO_Walking.play()
+				step_delay = step_delay_save
+			elif(step_delay > 0):
+				step_delay -= delta
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration)
 		elif(is_dashing == false and is_sliding == false):
+			$AUDIO_Walking.stop()
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, deceleration)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration)
 	else:
@@ -384,7 +420,7 @@ func _weapon_bob(vel: float, delta):
 	if weapon_holder:
 		if vel > 0.4:
 			var bob_amount: float = 0.01
-			var bob_freq: float = 0.01
+			var bob_freq: float = 0.008
 			weapon_holder.position.y = lerp(weapon_holder.position.y, def_weapon_holder_pos.y + sin(Time.get_ticks_msec() * bob_freq) * bob_amount, 10 * delta)
 			weapon_holder.position.x = lerp(weapon_holder.position.x, def_weapon_holder_pos.x + sin(Time.get_ticks_msec() * bob_freq / 2) * bob_amount, 10 * delta)
 		else:

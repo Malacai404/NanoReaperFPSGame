@@ -31,6 +31,8 @@ var preloaded_damage = 0
 
 var damage_timer = 0
 
+var stun_time = 0
+
 @onready var anim_tree = $AnimationTree
 
 @onready var nav_agent = $Enemy_Nav_Agent
@@ -41,7 +43,6 @@ func _take_delayed_damage(taken_damage):
 		preloaded_damage += taken_damage
 
 func _take_damage(taken_damage):
-	print("Soul hit")
 	health -= taken_damage
 
 
@@ -50,7 +51,6 @@ func _return_direction(loc: Vector3):
 	return position.direction_to(loc)
 
 func _attack_reset():
-	print("Reset")
 	if(!_target_in_range()):
 		
 		attacking = false
@@ -67,9 +67,10 @@ func _ready():
 	player_object = get_node(player_path)
 	state_machine = anim_tree.get("parameters/playback")
 	
-	
-	
+func _stun():
+	stun_time = 3
 func _process(_delta):
+	stun_time -= _delta
 	for i in $Enemy_Checker.get_overlapping_bodies():
 		if i is enemy or i is enemy_soul:
 			if(i.name != self.name):
@@ -100,7 +101,7 @@ func _process(_delta):
 		queue_free()
 	match  state_machine.get_current_node():
 		"run":
-			if(is_on_floor() and is_moving):
+			if(is_on_floor() and is_moving and stun_time <= 0):
 				velocitylocked = false
 				nav_agent.target_position = player_object.global_transform.origin
 				var next_nav_point = nav_agent.get_next_path_position()
@@ -108,10 +109,12 @@ func _process(_delta):
 				var nav = Vector3(fakenav.x, 0, fakenav.z)
 				velocity = lerp(velocity, nav, 0.5)
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
-			elif(is_moving == false):
+			elif(is_moving == false  and stun_time <= 0):
 				velocity = lerp(velocity, Vector3(0, velocity.y - 9.8 * _delta, 0), 0.5)
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
+			if($Audio_player.playing == false):
+				$Audio_player.play()
 			if(velocitylocked == false):
 				velocity = lerp(velocity, Vector3.ZERO, 0.5)
 			else:

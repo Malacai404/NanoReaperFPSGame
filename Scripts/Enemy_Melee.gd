@@ -27,6 +27,9 @@ var preloaded_damage = 0
 
 var damage_timer = 0
 
+
+var stun_time = 0
+
 @onready var anim_tree = $AnimationTree
 
 @onready var nav_agent = $Enemy_Nav_Agent
@@ -49,6 +52,9 @@ func _attack_reset():
 	if(!_target_in_range()):
 		attacking = false
 
+func _stun():
+	stun_time = 3
+
 func _attack():
 	if(_target_in_range()):
 		player_object._take_damage()
@@ -62,6 +68,7 @@ func _ready():
 	
 	
 func _process(_delta):
+	stun_time -= _delta
 	for i in $Enemy_Checker.get_overlapping_bodies():
 		if i is enemy or i is enemy_soul:
 			if(i.name != self.name):
@@ -87,6 +94,10 @@ func _process(_delta):
 			if(is_on_floor() == false):
 				velocity.y -= 9 * _delta
 		"run":
+			if(stun_time > 0):
+				velocity = lerp(velocity, Vector3(0, velocity.y, 0), 0.5)
+				move_and_slide()
+				return
 			velocitylocked = false
 			nav_agent.target_position = player_object.global_transform.origin
 			var next_nav_point = nav_agent.get_next_path_position()
@@ -95,6 +106,10 @@ func _process(_delta):
 			velocity = lerp(velocity, nav, 0.5)
 			look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
 		"attack":
+			if(stun_time > 0):
+				velocity = lerp(velocity, Vector3(0, velocity.y, 0), 0.5)
+				move_and_slide()
+				return
 			if(velocitylocked == false):
 				velocity = lerp(velocity, Vector3.ZERO, 0.5)
 			else:
