@@ -1,0 +1,489 @@
+[gd_scene load_steps=25 format=3 uid="uid://bume3fwv4j0xb"]
+
+[ext_resource type="PackedScene" uid="uid://dpmja4fedijur" path="res://Prefabs/player.tscn" id="2_18wch"]
+[ext_resource type="PackedScene" uid="uid://bvdb2old8vavb" path="res://Prefabs/enemy_melee.tscn" id="3_icqa2"]
+[ext_resource type="Texture2D" uid="uid://c2mkyxemlspl7" path="res://Sprites/512x512/Stone/Stone_13-512x512.png" id="3_wfe8l"]
+[ext_resource type="Script" path="res://Scripts/Checkpoint.gd" id="4_5gaty"]
+[ext_resource type="PackedScene" uid="uid://cyjdbq4qmonnk" path="res://Prefabs/enemy_melee_soul.tscn" id="4_gdf3d"]
+[ext_resource type="PackedScene" uid="uid://dsx48bu55blp6" path="res://Prefabs/void_energy_orb.tscn" id="5_svxpa"]
+[ext_resource type="Script" path="res://Scripts/Tutorial_Respawner.gd" id="5_taiqb"]
+[ext_resource type="Script" path="res://Scripts/Tutorial_end.gd" id="8_gkqy3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ib2r2"]
+sky_top_color = Color(0.281745, 0.0799209, 0.537177, 1)
+sky_horizon_color = Color(0.758499, 0.555245, 0.905023, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.407843, 0.0313726, 0.572549, 1)
+
+[sub_resource type="Sky" id="Sky_e1r3j"]
+sky_material = SubResource("ProceduralSkyMaterial_ib2r2")
+
+[sub_resource type="Environment" id="Environment_q8gbk"]
+background_mode = 2
+sky = SubResource("Sky_e1r3j")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_l4h5t"]
+vertices = PackedVector3Array(-40.6622, -71.6491, -767.982, -40.6622, -71.6491, -731.732, -10.6622, -71.6491, -731.732, -10.6622, -71.6491, -767.982, -40.6622, -71.6491, -706.732, -40.6622, -71.6491, -670.232, -10.6622, -71.6491, -670.232, -10.6622, -71.6491, -706.732, -40.6622, -71.6491, -656.982, -40.6622, -71.6491, -620.732, -10.6622, -71.6491, -620.732, -10.6622, -71.6491, -656.982, -40.6622, -71.6491, -610.482, -40.6622, -71.6491, -472.232, -10.6622, -71.6491, -472.232, -10.6622, -71.6491, -610.482, -41.1622, -57.3991, -445.232, -41.1622, -57.3991, -432.732, -40.6622, -57.3991, -432.232, -10.6622, -57.3991, -445.232, -40.6622, -57.3991, -432.232, -40.6622, -57.3991, -271.732, -10.6622, -57.3991, -271.732, -10.6622, -57.3991, -445.232, -40.6622, -57.3991, -258.732, -40.6622, -57.3991, -156.982, -10.6622, -57.3991, -156.982, -10.6622, -57.3991, -258.732, -41.1622, 0.350891, -152.982, -41.1622, 0.350891, -140.482, -40.6622, 0.350891, -139.982, -40.6622, 0.350891, -139.982, -40.6622, 0.350891, -114.482, -39.1622, 0.350891, -113.732, -40.6622, 0.350891, -139.982, -39.1622, 0.350891, -113.732, -38.6622, 0.350891, -112.732, -10.6622, 0.350891, -110.732, -10.6622, 0.350891, -152.982, -41.1622, 0.350891, -152.982, -38.6622, 0.350891, -112.732, -38.6622, 0.350891, -110.732, -10.6622, 0.350891, -110.732, -40.6622, -57.3991, -152.732, -40.6622, -57.3991, -141.982, -10.9122, -57.3991, -141.982, -10.9122, -57.3991, -152.732, -38.6622, 0.350891, -98.9821, -10.6622, 0.350891, -98.9821, -10.6622, 0.350891, -110.732, -38.6622, 0.350891, -110.732, -39.6622, 9.85089, -110.482, -39.6622, 9.85089, -99.2321, -9.66216, 9.85089, -99.2321, -9.66216, 9.85089, -110.482, -10.6622, 0.350891, -98.9821, -38.6622, 0.350891, -98.9821, -38.6622, 0.350891, -96.9821, -10.6622, 0.350891, -98.9821, -38.6622, 0.350891, -96.9821, -39.1622, 0.350891, -95.9821, -10.6622, 0.350891, -98.9821, -39.1622, 0.350891, -95.9821, -40.6622, 0.350891, -95.2321, -40.6622, 0.350891, -36.4821, -10.6622, 0.350891, -36.4821)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1), PackedInt32Array(7, 6, 4), PackedInt32Array(4, 6, 5), PackedInt32Array(11, 10, 8), PackedInt32Array(8, 10, 9), PackedInt32Array(15, 14, 12), PackedInt32Array(12, 14, 13), PackedInt32Array(17, 16, 18), PackedInt32Array(18, 16, 19), PackedInt32Array(21, 20, 22), PackedInt32Array(22, 20, 23), PackedInt32Array(27, 26, 24), PackedInt32Array(24, 26, 25), PackedInt32Array(30, 29, 28), PackedInt32Array(33, 32, 31), PackedInt32Array(35, 34, 36), PackedInt32Array(36, 34, 39), PackedInt32Array(36, 39, 38), PackedInt32Array(36, 38, 37), PackedInt32Array(42, 41, 40), PackedInt32Array(46, 45, 43), PackedInt32Array(43, 45, 44), PackedInt32Array(50, 49, 47), PackedInt32Array(47, 49, 48), PackedInt32Array(54, 53, 51), PackedInt32Array(51, 53, 52), PackedInt32Array(57, 56, 55), PackedInt32Array(60, 59, 58), PackedInt32Array(62, 61, 63), PackedInt32Array(63, 61, 64), PackedInt32Array(64, 61, 65)]
+agent_radius = 1.95
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ojdwe"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(55.625, 9.171, 14.57)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1san8"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(55.625, 9.171, 14.57)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5gkea"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(56.12, 9.171, 14.57)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_a6ro7"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(13.68, 9.171, 13.015)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_q6map"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(38.93, 11.701, 11.62)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tkuhi"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(2.43, 8.386, 10.4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j38vi"]
+albedo_texture = ExtResource("3_wfe8l")
+uv1_scale = Vector3(38.93, 53.571, 11.62)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4c503"]
+size = Vector3(33.72, 15.9224, 1)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_xkb7b"]
+size = Vector3(398.49, 12.12, 1169.33)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_sj72g"]
+size = Vector3(39.7107, 10.2838, 15.6161)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yvlw3"]
+emission_enabled = true
+emission = Color(1, 1, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_85686"]
+material = SubResource("StandardMaterial3D_yvlw3")
+size = Vector3(22.86, 8.445, 1)
+
+[node name="tutorial" type="Node3D"]
+
+[node name="environment" type="Node3D" parent="."]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="environment"]
+environment = SubResource("Environment_q8gbk")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="environment"]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 14.0903, 0)
+shadow_enabled = true
+
+[node name="SpotLight3D" type="SpotLight3D" parent="environment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.73158, -40.7628)
+light_energy = 11.165
+light_indirect_energy = 7.615
+spot_range = 28.21
+spot_angle = 80.35
+
+[node name="level" type="Node3D" parent="."]
+
+[node name="Player" parent="level" instance=ExtResource("2_18wch")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.18898, 3.39951)
+
+[node name="Enemy_Melee" parent="level" instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.12477, -71.7285, -470.459)
+
+[node name="Enemy_Melee2" parent="level" instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.95386, -71.7285, -457.436)
+
+[node name="Enemy_Melee3" parent="level" instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.88581, -71.7285, -457.436)
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 26, 0, 42.7226)
+navigation_mesh = SubResource("NavigationMesh_l4h5t")
+
+[node name="Floor" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -0.40815, -94.6803)
+use_collision = true
+size = Vector3(33.7119, 1, 120.37)
+material = SubResource("StandardMaterial3D_ojdwe")
+
+[node name="Floor2" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -58.3327, -200.355)
+use_collision = true
+size = Vector3(33.7119, 1, 120.37)
+material = SubResource("StandardMaterial3D_1san8")
+
+[node name="Floor3" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -58.3327, -358.39)
+use_collision = true
+size = Vector3(33.7119, 1, 177.132)
+material = SubResource("StandardMaterial3D_5gkea")
+
+[node name="Floor4" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -72.6491, -521.357)
+use_collision = true
+size = Vector3(33.7119, 1, 181.825)
+material = SubResource("StandardMaterial3D_5gkea")
+
+[node name="Floor5" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -72.6491, -638.845)
+use_collision = true
+size = Vector3(33.7119, 1, 40.1077)
+material = SubResource("StandardMaterial3D_a6ro7")
+
+[node name="Floor6" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -72.6491, -688.446)
+use_collision = true
+size = Vector3(33.7119, 1, 40.1077)
+material = SubResource("StandardMaterial3D_a6ro7")
+
+[node name="Floor7" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -72.6491, -743.999)
+use_collision = true
+size = Vector3(33.7119, 1, 51.419)
+material = SubResource("StandardMaterial3D_a6ro7")
+
+[node name="Floor8" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.6194, -72.6491, -801.888)
+use_collision = true
+size = Vector3(33.7119, 1, 51.419)
+material = SubResource("StandardMaterial3D_a6ro7")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24.6075, 4.47964, -104.775)
+use_collision = true
+size = Vector3(33.8347, 10.0273, 14.9248)
+material = SubResource("StandardMaterial3D_q6map")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="level/NavigationRegion3D/CSGBox3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3.8226, 0.08461)
+operation = 2
+use_collision = true
+size = Vector3(32.42, 2.663, 17.844)
+material = SubResource("StandardMaterial3D_tkuhi")
+
+[node name="CSGBox3D2" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.9314, -32.0944, -147.379)
+use_collision = true
+size = Vector3(34.4616, 63.427, 14.925)
+material = SubResource("StandardMaterial3D_j38vi")
+
+[node name="CSGBox3D3" type="CSGBox3D" parent="level/NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.9314, -65.3756, -439.689)
+use_collision = true
+size = Vector3(34.4616, 14.8346, 14.925)
+material = SubResource("StandardMaterial3D_j38vi")
+
+[node name="Intro" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.7772, -9.43106)
+text = "Welcome To Nano Reaper
+Use W A S D or the arrow keys to move
+Use the Spacebar to Jump
+Press Tab to go to menu"
+font_size = 207
+
+[node name="Slide" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, 3.7772, -53.9061)
+text = "Use C to slide, it makes your 
+hitbox smaller and is good for movement"
+font_size = 207
+
+[node name="Checkpoint" type="Area3D" parent="level/Slide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.51653, 0)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Slide/Checkpoint"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Groundpound" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, 3.7772, -108.801)
+text = "While in air you can press C to 
+groundpound, which makes you fall faster"
+font_size = 207
+
+[node name="Dash" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.52894, -50.1528, -225.521)
+text = "Press Shift to Dash
+which moves you quickly but
+"
+font_size = 207
+
+[node name="Dash2" type="Label3D" parent="level/Dash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.93594, -1.98467, 0)
+text = "uses"
+font_size = 207
+
+[node name="Dash3" type="Label3D" parent="level/Dash"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06283, -1.98467, 0)
+modulate = Color(0.443137, 0.0431373, 1, 1)
+text = "VOID ENERGY"
+font_size = 207
+
+[node name="enemyintro" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.01329, -51.8553, -323.99)
+text = "Nanobots act as your"
+font_size = 207
+
+[node name="enemyintro2" type="Label3D" parent="level/enemyintro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.34928, 0, 0)
+modulate = Color(1, 0, 0, 1)
+text = "health"
+font_size = 207
+
+[node name="enemyintro3" type="Label3D" parent="level/enemyintro"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.11885, -1.35786, 0)
+text = "if you run out you die"
+font_size = 207
+
+[node name="enemyintro2" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -51.981, -398.696)
+text = "below is three robotic enemys, they will
+chase you and attempt to kill you
+use the left mouse button to shoot
+(There is an invisible wall to keep you safe)"
+font_size = 207
+
+[node name="enemyintro7" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -66.2321, -448.365)
+text = "Robot Enemies drop nanobot orbs 
+which give you nanobots when collected
+Soul Enemies drop void energy orbs when killed
+which gives you void energy when collected
+Void Energy orbs are spread around this tutorial"
+font_size = 207
+
+[node name="enemyintro3" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -65.6298, -539.793)
+text = "There are several abilities you can use
+to move around and kill enemies"
+font_size = 207
+
+[node name="enemyintro4" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -65.6298, -567.536)
+text = "You can hold E to charge a core blast using void energy,
+when you release E it shoots an explosion that can damage 
+and bounce enemies. It can also move the player for a quick escape"
+font_size = 207
+
+[node name="enemyintro5" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -65.6298, -623.523)
+text = "You can press Q to do a shockwave
+you leap high into the air and stun enemies around you
+It uses void energy"
+font_size = 207
+
+[node name="enemyintro6" type="Label3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50081, -65.6298, -682.476)
+text = "Pressing X activates overload
+It costs 50 void energy
+When overloaded you generate nanobots,
+move faster, and deal more damage "
+font_size = 207
+
+[node name="Area3D" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 81.5697, -60.9563, -225.366)
+script = ExtResource("5_taiqb")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -85.28, -45.7621, -118.596)
+shape = SubResource("BoxShape3D_xkb7b")
+
+[node name="Checkpoint2" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, 6.29372, -111.837)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint3" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -50.9371, -175.505)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint4" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -50.9371, -340.177)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint5" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -50.9371, -407.05)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint6" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -65.477, -486.648)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint7" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -65.477, -558.794)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint7"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint8" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -65.477, -604.191)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint9" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -65.477, -652.235)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint9"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Checkpoint10" type="Area3D" parent="level"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.204361, -65.477, -713.282)
+script = ExtResource("4_5gaty")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="level/Checkpoint10"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.219985, 9.73846)
+shape = SubResource("BoxShape3D_4c503")
+
+[node name="Enemy_Melee2" parent="." instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68829, -72.1491, -609.129)
+player_path = NodePath("../level/Player")
+
+[node name="Enemy_Melee5" parent="." instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68829, -72.1491, -597.621)
+player_path = NodePath("../level/Player")
+
+[node name="Enemy_Melee6" parent="." instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.50985, -72.1491, -597.621)
+player_path = NodePath("../level/Player")
+
+[node name="enemy_melee_soul3" parent="." instance=ExtResource("4_gdf3d")]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, -8.03906, -72.1491, -656.365)
+player_path = NodePath("../level/Player")
+
+[node name="enemy_melee_soul4" parent="." instance=ExtResource("4_gdf3d")]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, 8.4677, -72.1491, -647.513)
+player_path = NodePath("../level/Player")
+
+[node name="Enemy_Melee3" parent="." instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68829, -72.1491, -663.96)
+player_path = NodePath("../level/Player")
+
+[node name="enemy_melee_soul5" parent="." instance=ExtResource("4_gdf3d")]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, -8.03906, -72.1491, -713.055)
+player_path = NodePath("../level/Player")
+
+[node name="enemy_melee_soul6" parent="." instance=ExtResource("4_gdf3d")]
+transform = Transform3D(0.975, 0, 0, 0, 0.975, 0, 0, 0, 0.975, 8.4677, -72.1491, -704.203)
+player_path = NodePath("../level/Player")
+
+[node name="Enemy_Melee4" parent="." instance=ExtResource("3_icqa2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68829, -72.1491, -720.651)
+player_path = NodePath("../level/Player")
+
+[node name="void_energy_orb" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -70.4599, -596.966)
+
+[node name="void_energy_orb2" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -70.4599, -591.998)
+
+[node name="void_energy_orb3" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -591.998)
+
+[node name="void_energy_orb4" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -596.434)
+
+[node name="void_energy_orb5" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -70.4599, -655.559)
+
+[node name="void_energy_orb6" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -70.4599, -650.592)
+
+[node name="void_energy_orb7" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -650.592)
+
+[node name="void_energy_orb8" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -655.028)
+
+[node name="void_energy_orb9" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -70.4599, -718.864)
+
+[node name="void_energy_orb10" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70449, -68.4076, -713.897)
+
+[node name="void_energy_orb13" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -55.8668, -178.171)
+
+[node name="void_energy_orb14" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -55.8668, -202.527)
+
+[node name="void_energy_orb15" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -55.8668, -256.247)
+
+[node name="void_energy_orb16" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -55.8668, -303.711)
+
+[node name="void_energy_orb17" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -55.8668, -339.185)
+
+[node name="void_energy_orb18" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -68.9218, -454.54)
+
+[node name="void_energy_orb19" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.572056, -68.9218, -521.599)
+
+[node name="void_energy_orb11" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -713.897)
+
+[node name="void_energy_orb12" parent="." instance=ExtResource("5_svxpa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.43187, -70.4599, -718.333)
+
+[node name="Tutorial_end" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.780163, -75.0039, -757.665)
+script = ExtResource("8_gkqy3")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Tutorial_end"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.362915, 7.07997, -2.3067)
+shape = SubResource("BoxShape3D_sj72g")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Tutorial_end"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.38188, 7.09099, 0)
+mesh = SubResource("BoxMesh_85686")
+
+[connection signal="body_entered" from="level/Slide/Checkpoint" to="level/Slide/Checkpoint" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Area3D" to="level/Area3D" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint2" to="level/Checkpoint2" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint3" to="level/Checkpoint3" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint4" to="level/Checkpoint4" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint5" to="level/Checkpoint5" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint6" to="level/Checkpoint6" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint7" to="level/Checkpoint7" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint8" to="level/Checkpoint8" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint9" to="level/Checkpoint9" method="_on_body_entered"]
+[connection signal="body_entered" from="level/Checkpoint10" to="level/Checkpoint10" method="_on_body_entered"]
+[connection signal="body_entered" from="Tutorial_end" to="Tutorial_end" method="_on_body_entered"]

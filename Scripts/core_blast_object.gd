@@ -14,10 +14,10 @@ func _ready():
 func _process(_delta):
 	print(scale)
 	for i in get_overlapping_bodies():
-		if "Enemy_Melee" in i.name:
+		if "enemy" in i.name.to_lower():
 			already_exploded.append(i.name)
 			i.attacking = false
-			var direction =i._return_direction(Vector3(position.x, -5, position.z))
+			var direction =i._return_direction(Vector3(position.x, position.y -50, position.z))
 			i.velocity = Vector3(direction.x, direction.y - 1.5, direction.z) * -2 * blast_power
 			i._take_delayed_damage(1)
 		if i.name == "Player":

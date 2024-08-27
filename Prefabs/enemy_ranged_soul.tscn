@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://c8b4k62c2f84t"]
+[gd_scene load_steps=29 format=3 uid="uid://c8b4k62c2f84t"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_Ranged_Soul.gd" id="1_j3rxd"]
 [ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="2_t65hv"]
@@ -122,8 +122,75 @@ left_to_right = 0.7
 [sub_resource type="SphereMesh" id="SphereMesh_725g3"]
 material = ExtResource("3_ntnhw")
 
+[sub_resource type="Animation" id="Animation_m3lj0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.91986, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tcf27"]
+resource_name = "rotate"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D2:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.6, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.91986, 0), Vector3(0, 8.20305, 0), Vector3(0, 1.91986, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_03ynx"]
+_data = {
+"RESET": SubResource("Animation_m3lj0"),
+"rotate": SubResource("Animation_tcf27")
+}
+
 [node name="Enemy_Ranged_Soul" type="CharacterBody3D"]
 script = ExtResource("1_j3rxd")
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.385, 0)
+target_position = Vector3(0, 0, -20)
+hit_from_inside = true
+collide_with_areas = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00434351, 0.752839, -0.0202732)
@@ -156,23 +223,19 @@ shape = SubResource("SphereShape3D_xig2h")
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
-[node name="RayCast3D" type="RayCast3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.385, 0)
-target_position = Vector3(0, 0, -20)
-
 [node name="BulletSpawn" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30196, -0.843101)
 
 [node name="Mesh" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0.180285, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Mesh"]
-transform = Transform3D(0.54, 0, 0, 0, 0.54, 0, 0, 0, 0.54, 0, 0.266, -0.048)
+transform = Transform3D(0.54, 0, 2.41185e-06, 0, 0.54, 0, -2.41185e-06, 0, 0.54, 0, 0.266, -0.048)
 mesh = SubResource("PrismMesh_rf8ef")
 skeleton = NodePath("../..")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="Mesh"]
-transform = Transform3D(-0.378491, 0, -0.385155, 0, 0.54, 0, 0.385155, 0, -0.378491, 0.0114137, 0.624291, 0.0281463)
+transform = Transform3D(-0.18469, 0, 0.507434, 0, 0.54, 0, -0.507434, 0, -0.18469, 0.0114137, 0.624291, 0.0281463)
 mesh = SubResource("PrismMesh_fnfy8")
 skeleton = NodePath("../..")
 
@@ -180,3 +243,9 @@ skeleton = NodePath("../..")
 transform = Transform3D(-0.8, 0, 6.99382e-08, 0, 0.8, 0, -6.99382e-08, 0, -0.8, 0.0114137, 1.1101, 0.0281463)
 mesh = SubResource("SphereMesh_725g3")
 skeleton = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Mesh"]
+libraries = {
+"": SubResource("AnimationLibrary_03ynx")
+}
+autoplay = "rotate"

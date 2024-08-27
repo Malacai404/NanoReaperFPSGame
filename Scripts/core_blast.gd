@@ -17,7 +17,7 @@ func _on_body_entered(body):
 	if(body.name == "floor"):
 		for i in $blast_radius.get_overlapping_bodies():
 			
-			if "Enemy_Melee" in i.name:
+			if i is enemy_soul:
 				i.attacking = false
 				i.velocity = i._return_direction(position) * -50
 				

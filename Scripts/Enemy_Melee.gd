@@ -17,6 +17,8 @@ var ATTACK_RANGE = 1.5
 
 @export var player_path : NodePath
 
+var disable = false
+
 var dead = false
 
 var state_machine = null
@@ -83,7 +85,7 @@ func _process(_delta):
 		dead = true
 	if(dead == true):
 		var nanobot_orb_object = nanobot_orb.instantiate()
-		nanobot_orb_object.position = Vector3(position.x, position.y - 0.5, position.z)
+		nanobot_orb_object.position = Vector3(position.x, position.y + 0.5, position.z)
 		nanobot_orb_object.value = 10
 		get_parent().add_child(nanobot_orb_object)
 		health = 3

@@ -16,6 +16,9 @@ var nanobot_regen_per_second = nano_regen_rate / regen_time
 var nanobot_count = 150
 var void_energy_value = 200
 
+
+var slide_unqueued = false
+
 @onready var hud = $HUD
 @onready var nanobot_slider = $HUD/HUD_NanobotSlider
 @onready var void_energy_slider = $HUD/HUD_VOIDEnergySlider
@@ -77,7 +80,7 @@ var blast_delay_save = blast_delay
 
 #camera variables
 
-
+var round = 0
 @export var tilt = true
 @onready var camera = $HEAD_Player/RECOIL_HEAD_Player/CAMERA_Player
 @onready var head = $HEAD_Player
@@ -90,6 +93,13 @@ var mouse_input : Vector2
 @onready var def_weapon_holder_pos = weapon_holder.position
  
 #sliding variables
+
+@onready var slide_collider = $COLLISION_Sliding
+@onready var default_collider = $COLLISION_Player
+
+
+@onready var checkpoint: Vector3 = position
+
 @export var BOINGACTIVE = false
 var BOING = 1
 var is_sliding = false
@@ -109,6 +119,8 @@ var dash_delay_save = dash_delay
 var dash_length = 0.1
 var dash_length_save = dash_length
 var dash_force = 30
+
+var on_menu = false
 
 func _start_bounce():
 	_bounce(slide_start_state)
@@ -131,6 +143,8 @@ func _ready():
 	set_process_input(true)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	
+func _tutorial_respawn():
+	position = checkpoint
 	
 func _take_damage():
 	$HUD/HUD_Static_Animator.play("static_flash")
@@ -139,6 +153,10 @@ func _reload_scene():
 	get_tree().paused = false
 	get_tree().reload_current_scene()
 	
+	
+func _menu():
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")
 	
 func _shoot():
 
@@ -174,7 +192,19 @@ func _death():
 	dead = true
 	
 func _physics_process(delta):
-	if(dead == true):
+	if(slide_unqueued == true):
+		if($HeadCheck.is_colliding() == false):
+			is_sliding = false
+			slide_unqueued = false
+	if(on_menu == true):
+		
+		$HUD/ColorRect.visible = true
+		get_tree().paused = true
+	else:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		$HUD/ColorRect.visible = false
+		get_tree().paused = false
+	if(dead == true or on_menu == true):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
 		
@@ -265,7 +295,7 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, deceleration)
 	else:
 		if(Input.is_action_just_pressed("slide")):
-			velocity.y = -gravity
+			velocity.y += -gravity
 		if(input != Vector2.ZERO and is_dashing == false and is_sliding == false):
 			velocity.x = lerp(velocity.x, movement_dir.x * speed, acceleration * air_acceleration_multiplier)
 			velocity.z = lerp(velocity.z, movement_dir.z * speed, acceleration * air_acceleration_multiplier)
@@ -298,22 +328,24 @@ func _physics_process(delta):
 	# Slide Process
 	
 	if(is_sliding == true and slide_length > 0):
+		default_collider.disabled = true
+		slide_collider.disabled = false
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, -0.2, 0.1)
 		slide_length -= delta
 		velocity.x = slide_start_state.x
 		velocity.z = slide_start_state.z
 	
 	if(is_sliding == false):
+		default_collider.disabled = false
+		slide_collider.disabled = true
 		$HEAD_Player.position.y = lerp($HEAD_Player.position.y, 0.56, 0.1)
+	
 		
 		
 	
 	if Input.is_action_just_pressed("shoot"):
 		_shoot()
 	
-	if(slide_length <= 0):
-		is_sliding = false
-		
 	if Input.is_action_just_pressed("slide"):
 		if(input != Vector2.ZERO):
 			slide_start_state = transform.basis * Vector3(input.x, 0, input.y) * slide_force
@@ -324,7 +356,10 @@ func _physics_process(delta):
 			slide_length = slide_length_save
 
 	if Input.is_action_just_released("slide"):
-		is_sliding = false
+		if($HeadCheck.is_colliding() == false):
+			is_sliding = false
+		else:
+			slide_unqueued = true
 		
 	# Dash Process
 	
@@ -356,8 +391,9 @@ func _physics_process(delta):
 	move_and_slide()
 
 func _process(delta):
-	
-	
+	if(get_parent().get_parent().name == "tutorial"):
+		$HUD/RichTextLabel.visible = false
+	$HUD/RichTextLabel.text = str("Round:", round)
 	
 	if(void_energy_value > 250):
 		void_energy_value = 250
@@ -399,7 +435,7 @@ func _process(delta):
 	
 
 	if Input.is_action_just_pressed("quick_exit"):
-		get_tree().quit()
+		on_menu = !on_menu
 
 func _return_direction(loc: Vector3):
 	return position.direction_to(loc)
@@ -426,3 +462,12 @@ func _weapon_bob(vel: float, delta):
 		else:
 			weapon_holder.position.y = lerp(weapon_holder.position.y, def_weapon_holder_pos.y, 10 * delta)
 			weapon_holder.position.x = lerp(weapon_holder.position.x, def_weapon_holder_pos.x, 10 * delta)
+
+
+func _on_back_pressed():
+	print("off menu")
+	on_menu = false
+
+
+func _on_quit_pressed():
+	get_tree().quit()

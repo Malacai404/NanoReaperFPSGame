@@ -9,7 +9,7 @@ func _ready():
 func _physics_process(delta):
 	is_on_floor = false
 	for i in $GroundDetect.get_overlapping_bodies():
-		if(i.name == "floor"):
+		if("floor" in  i.name.to_lower()):
 			is_on_floor = true
 	if(is_on_floor == false):
 		position.y -= delta

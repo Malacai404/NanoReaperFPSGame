@@ -36,6 +36,9 @@ var currently_shooting = false
 
 var stun_time = 0
 
+@onready var ray_cast_3d = $RayCast3D
+
+
 @onready var anim_tree = $AnimationTree
 
 @onready var nav_agent = $Enemy_Nav_Agent
@@ -85,18 +88,19 @@ func _ready():
 	state_machine = anim_tree.get("parameters/playback")
 	
 func _physics_process(delta):
-	$RayCast3D.look_at(player_object.position)
+	ray_cast_3d.look_at(player_object.position)
 	
 func _process(_delta):
 
 	player_in_sight = false
-	if $RayCast3D.is_colliding():
-		if $RayCast3D.get_collider().name == "Player":
-			player_in_sight = true
-			if(position.distance_to(player_object.position) < 20):
-				running_from_player = true
-			else:
-				running_from_player = false
+	if ray_cast_3d.is_colliding():
+		if(ray_cast_3d.get_collider() != null):
+			if ray_cast_3d.get_collider().name == "Player":
+				player_in_sight = true
+				if(position.distance_to(player_object.position) < 15):
+					running_from_player = true
+				else:
+					running_from_player = false
 	if(running_from_player and currently_shooting == false):
 		mesh.rotation_degrees = lerp(mesh.rotation_degrees, Vector3(0,0,0), 1)
 	elif(running_from_player == true or currently_shooting == true):

@@ -41,7 +41,7 @@ var stun_time = 0
 
 func _shoot():
 	var bullet = bullet_prefab.instantiate()
-	bullet.global_position = $BulletSpawn.global_position
+	bullet.position = $BulletSpawn.global_position
 	bullet.player_object = player_object
 	get_parent().add_child(bullet)
 
@@ -92,7 +92,7 @@ func _process(_delta):
 	if $RayCast3D.is_colliding():
 		if $RayCast3D.get_collider().name == "Player":
 			player_in_sight = true
-			if(position.distance_to(player_object.position) < 20):
+			if(position.distance_to(player_object.position) < 15):
 				running_from_player = true
 			else:
 				running_from_player = false
@@ -167,6 +167,7 @@ func _process(_delta):
 	anim_tree.set("parameters/conditions/falling", !is_on_floor())
 	if(!is_on_floor()):
 		anim_tree.set("parameters/conditions/walk", false)
+		running_from_player = false
 
 	
 	move_and_slide()
