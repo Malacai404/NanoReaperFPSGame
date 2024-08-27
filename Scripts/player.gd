@@ -128,6 +128,8 @@ func _start_bounce():
 func _bounce(slide_state):
 	velocity = -slide_state
 func _input(event):
+	if(dead == true or on_menu == true or goofy_menu == true):
+		return
 	if camera: 
 		if(event is InputEventMouseMotion):
 			head.rotation.x -= event.relative.y * cam_speed
@@ -201,10 +203,11 @@ func _physics_process(delta):
 		$HUD/ColorRect.visible = true
 		get_tree().paused = true
 	else:
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if(goofy_menu == false):
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		$HUD/ColorRect.visible = false
 		get_tree().paused = false
-	if(dead == true or on_menu == true):
+	if(dead == true or on_menu == true or goofy_menu == true):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		return
 		
@@ -402,7 +405,8 @@ func _process(delta):
 	if(previousinputs == konamicode):
 		goofy_menu = true
 	if(goofy_menu == true):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		if(Input.mouse_mode != Input.MOUSE_MODE_VISIBLE):
+			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		goofy_menu_object.visible = true
 	else:
 		goofy_menu_object.visible = false

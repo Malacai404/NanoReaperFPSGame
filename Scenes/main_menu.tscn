@@ -509,6 +509,7 @@ offset_left = 630.0
 offset_top = 443.0
 offset_right = 1198.0
 offset_bottom = 704.0
+mouse_default_cursor_shape = 2
 
 [node name="Endless_Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -517,6 +518,7 @@ offset_left = 620.0
 offset_top = 740.0
 offset_right = 1188.0
 offset_bottom = 1001.0
+mouse_default_cursor_shape = 2
 
 [node name="Credits_Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -525,6 +527,7 @@ offset_left = 86.0
 offset_top = 788.0
 offset_right = 462.0
 offset_bottom = 948.0
+mouse_default_cursor_shape = 2
 
 [node name="Settings_Button" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
@@ -533,6 +536,7 @@ offset_left = 1399.0
 offset_top = 791.0
 offset_right = 1775.0
 offset_bottom = 951.0
+mouse_default_cursor_shape = 2
 
 [node name="Button4" type="Sprite2D" parent="."]
 position = Vector2(1574, 885)
@@ -552,14 +556,6 @@ theme_override_fonts/normal_font = ExtResource("1_dxl8r")
 theme_override_font_sizes/normal_font_size = 151
 bbcode_enabled = true
 text = "settings"
-
-[node name="Quit" type="Button" parent="."]
-modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 1399.38
-offset_top = 496.753
-offset_right = 1775.38
-offset_bottom = 656.753
 
 [node name="Button5" type="Sprite2D" parent="."]
 position = Vector2(1574.38, 590.753)
@@ -672,8 +668,16 @@ theme_override_font_sizes/normal_font_size = 151
 bbcode_enabled = true
 text = "Work in Progress"
 
+[node name="Quit" type="Button" parent="."]
+modulate = Color(1, 1, 1, 0)
+offset_left = 1399.0
+offset_top = 497.0
+offset_right = 1773.0
+offset_bottom = 657.0
+mouse_default_cursor_shape = 2
+
 [connection signal="pressed" from="Tutorial_Button" to="." method="_on_tutorial_button_pressed"]
 [connection signal="pressed" from="Endless_Button" to="." method="_on_endless_button_pressed"]
 [connection signal="pressed" from="Credits_Button" to="." method="_on_credits_button_pressed"]
-[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]
 [connection signal="pressed" from="credits/Credits_Close_Button" to="." method="_on_credits_close_button_pressed"]
+[connection signal="pressed" from="Quit" to="." method="_on_quit_pressed"]

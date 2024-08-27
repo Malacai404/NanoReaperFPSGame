@@ -12,6 +12,14 @@ var spawn_points
 func _ready():
 	spawn_points = $level/Spawn_Points.get_children()
 
+func _summon_hampter(num: int):
+	for i in range(num):
+		var spawn = spawn_points.pick_random()
+		var enemy_select= randi_range(1,4)
+		var enemy_object = ENEMY_MELEE.instantiate()
+		enemy_object.position = spawn.global_position
+		enemy_object.player_path = $level/Player.get_path()
+		$level.add_child(enemy_object)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
