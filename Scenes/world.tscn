@@ -166,9 +166,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.55019, 0, 14.6222)
 [node name="Spawn14" type="Node3D" parent="level/Spawn_Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.901, 0, 14.6222)
 
-[node name="Spawn15" type="Node3D" parent="level/Spawn_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -27.901, 0, 14.6222)
-
 [node name="Spawn16" type="Node3D" parent="level/Spawn_Points"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -45.8758, 0, 0)
 

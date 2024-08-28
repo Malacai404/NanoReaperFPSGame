@@ -475,3 +475,9 @@ func _on_back_pressed():
 
 func _on_quit_pressed():
 	get_tree().quit()
+
+
+func _on_hud_secret_hampter_pressed():
+	$"../.."._summon_hampter(5)
+	previousinputs = []
+	goofy_menu = false

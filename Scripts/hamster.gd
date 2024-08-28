@@ -3,8 +3,11 @@ extends CharacterBody3D
 var woman = false
 @onready var bow = $bow
 var blood_ball = preload("res://Prefabs/blood_orb.tscn")
+var player_path
+var player_object
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player_object = get_node(player_path)
 	position = Vector3(randf_range(-25,25), position.y, randf_range(-25, 25))
 
 
@@ -14,7 +17,7 @@ func _process(_delta):
 		bow.visible = true
 	else:
 		bow.visible = false
-	look_at($"../Player".position)
+	look_at(player_object.position)
 	rotation_degrees = Vector3(0, rotation_degrees.y, 0)
 
 func _spurt_blood():
@@ -27,5 +30,5 @@ func _on_hamster_area_body_entered(body):
 			body._start_bounce()
 			for i in range(25):
 				_spurt_blood()
-			body.dark_energy_value += 10
-			position = Vector3(randf_range(-25,25), position.y, randf_range(-25, 25))
+			body.void_energy_value += 10
+			queue_free()

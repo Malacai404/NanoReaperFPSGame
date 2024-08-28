@@ -2,6 +2,9 @@ extends Node3D
 
 var round = 0
 
+
+
+var Hampter = preload("res://Prefabs/hamster.tscn")
 var ENEMY_MELEE = preload("res://Prefabs/enemy_melee.tscn")
 var ENEMY_MELEE_SOUL = preload("res://Prefabs/enemy_melee_soul.tscn")
 var ENEMY_RANGED_ROBOT = preload("res://Prefabs/enemy_ranged_robot.tscn")
@@ -15,8 +18,7 @@ func _ready():
 func _summon_hampter(num: int):
 	for i in range(num):
 		var spawn = spawn_points.pick_random()
-		var enemy_select= randi_range(1,4)
-		var enemy_object = ENEMY_MELEE.instantiate()
+		var enemy_object = Hampter.instantiate()
 		enemy_object.position = spawn.global_position
 		enemy_object.player_path = $level/Player.get_path()
 		$level.add_child(enemy_object)

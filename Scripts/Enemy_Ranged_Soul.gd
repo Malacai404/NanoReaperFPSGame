@@ -5,7 +5,7 @@ signal enemy_hit
 
 var player_object = null
 
-var health = 5
+var health = 2
 
 var speed = 5
 
