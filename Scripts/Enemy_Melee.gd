@@ -95,7 +95,7 @@ func _process(_delta):
 		"falling":
 			if(is_on_floor() == false):
 				velocity.y -= 9 * _delta
-		"run":
+		"running":
 			if(stun_time > 0):
 				velocity = lerp(velocity, Vector3(0, velocity.y, 0), 0.5)
 				move_and_slide()

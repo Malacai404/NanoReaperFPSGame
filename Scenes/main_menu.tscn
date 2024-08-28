@@ -670,6 +670,7 @@ text = "Work in Progress"
 
 [node name="Quit" type="Button" parent="."]
 modulate = Color(1, 1, 1, 0)
+layout_mode = 0
 offset_left = 1399.0
 offset_top = 497.0
 offset_right = 1773.0

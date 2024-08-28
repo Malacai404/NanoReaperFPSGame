@@ -13,10 +13,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
-	if(woman == true):
-		bow.visible = true
-	else:
-		bow.visible = false
 	look_at(player_object.position)
 	rotation_degrees = Vector3(0, rotation_degrees.y, 0)
 

@@ -19,12 +19,12 @@ func _process(delta):
 
 func _on_tutorial_button_pressed():
 	if(credits == false):
-		get_tree().change_scene_to_file("res://Scenes/tutorial.tscn")
+		LoadManager.load_scene("res://Scenes/tutorial.tscn")
 
 
 func _on_endless_button_pressed():
 	if(credits == false):
-		get_tree().change_scene_to_file("res://Scenes/world.tscn")
+		LoadManager.load_scene("res://Scenes/world.tscn")
 
 
 func _on_credits_button_pressed():

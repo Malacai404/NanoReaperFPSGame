@@ -14,6 +14,10 @@ config/name="NanoReaper"
 run/main_scene="res://Scenes/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
 
+[autoload]
+
+LoadManager="*res://Autoloads/LoadManager.gd"
+
 [display]
 
 window/size/viewport_width=1920

@@ -34,11 +34,11 @@ script = ExtResource("1_5nip3")
 [node name="Player" parent="level" instance=ExtResource("2_angmd")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.48767, 0)
 
-[node name="Nav_Region" type="NavigationRegion3D" parent="level"]
+[node name="Nav_Region" type="NavigationRegion3D" parent="level" groups=["obstacle"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.113934, -1.89671, -0.437047)
 navigation_mesh = SubResource("NavigationMesh_5bfid")
 
-[node name="floor" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="floor" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.41049, 0)
 use_collision = true
 collision_layer = 7
@@ -46,77 +46,77 @@ collision_mask = 7
 size = Vector3(100, 0.54, 100)
 material = ExtResource("1_4ei0e")
 
-[node name="walls" type="Node3D" parent="level/Nav_Region"]
+[node name="walls" type="Node3D" parent="level/Nav_Region" groups=["obstacle"]]
 
-[node name="wall1" type="CSGBox3D" parent="level/Nav_Region/walls"]
+[node name="wall1" type="CSGBox3D" parent="level/Nav_Region/walls" groups=["obstacle"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 3.55, 50)
 use_collision = true
 size = Vector3(100, 51.375, 1)
 material = ExtResource("31_1gjro")
 
-[node name="wall2" type="CSGBox3D" parent="level/Nav_Region/walls"]
+[node name="wall2" type="CSGBox3D" parent="level/Nav_Region/walls" groups=["obstacle"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.02, 3.55, -50)
 use_collision = true
 size = Vector3(100, 51.375, 1)
 material = ExtResource("31_1gjro")
 
-[node name="wall3" type="CSGBox3D" parent="level/Nav_Region/walls"]
+[node name="wall3" type="CSGBox3D" parent="level/Nav_Region/walls" groups=["obstacle"]]
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, -50, 3.55, 2.08165e-12)
 use_collision = true
 size = Vector3(100, 51.375, 1)
 material = ExtResource("31_1gjro")
 
-[node name="wall4" type="CSGBox3D" parent="level/Nav_Region/walls"]
+[node name="wall4" type="CSGBox3D" parent="level/Nav_Region/walls" groups=["obstacle"]]
 transform = Transform3D(-4.37114e-08, 3.48787e-16, 1, 3.48787e-16, 1, -3.48787e-16, -1, 3.48787e-16, -4.37114e-08, 50, 3.55, 2.08165e-12)
 use_collision = true
 size = Vector3(100, 51.375, 1)
 material = ExtResource("31_1gjro")
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="level/Nav_Region"]
+[node name="CSGMesh3D" type="CSGMesh3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(7.45, 0, 0, 0, 7.45, 0, 0, 0, 7.45, -17.8648, 0, 0)
 use_collision = true
 mesh = SubResource("PrismMesh_8o17b")
 
-[node name="CSGMesh3D2" type="CSGMesh3D" parent="level/Nav_Region"]
+[node name="CSGMesh3D2" type="CSGMesh3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(-3.2565e-07, 0, 7.45, 0, 7.45, 0, -7.45, 0, -3.2565e-07, -2.75661, 0, 14.8618)
 use_collision = true
 mesh = SubResource("PrismMesh_8o17b")
 
-[node name="CSGMesh3D3" type="CSGMesh3D" parent="level/Nav_Region"]
+[node name="CSGMesh3D3" type="CSGMesh3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(-3.2565e-07, 0, -7.45, 0, 7.45, 0, 7.45, 0, -3.2565e-07, -2.75661, 0, -14.872)
 use_collision = true
 mesh = SubResource("PrismMesh_8o17b")
 
-[node name="CSGMesh3D4" type="CSGMesh3D" parent="level/Nav_Region"]
+[node name="CSGMesh3D4" type="CSGMesh3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(-7.45, 0, -6.513e-07, 0, 7.45, 0, 6.513e-07, 0, -7.45, 12.1469, 0, -0.0198064)
 use_collision = true
 mesh = SubResource("PrismMesh_8o17b")
 
-[node name="CSGBox3D" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="CSGBox3D" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(7.685, 0, 0, 0, 7.685, 0, 0, 0, 7.685, -2.86745, 0.508764, 0.00515962)
 use_collision = true
 size = Vector3(1, 0.836, 0.965)
 material = SubResource("StandardMaterial3D_q3m2a")
 
-[node name="CSGBox3D2" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="CSGBox3D2" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(7.685, 0, 0, 0, 5.62045, 5.24116, 0, -5.24116, 5.62045, -2.86745, -1.23432, -5.84544)
 use_collision = true
 size = Vector3(1, 0.568642, 1.27157)
 material = SubResource("StandardMaterial3D_q3m2a")
 
-[node name="CSGBox3D4" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="CSGBox3D4" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(-7.685, -4.58196e-07, 4.91356e-07, 0, 5.62045, 5.24116, -6.71844e-07, 5.24116, -5.62045, -2.86745, -1.23432, 5.77034)
 use_collision = true
 size = Vector3(1, 0.568642, 1.27157)
 material = SubResource("StandardMaterial3D_q3m2a")
 
-[node name="CSGBox3D3" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="CSGBox3D3" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(9.16427e-08, 5.24116, -5.62045, 0, 5.62045, 5.24116, 7.685, -6.25002e-08, 6.70232e-08, 3.06619, -1.23432, -0.0918653)
 use_collision = true
 size = Vector3(1, 0.568642, 1.27157)
 material = SubResource("StandardMaterial3D_q3m2a")
 
-[node name="CSGBox3D5" type="CSGBox3D" parent="level/Nav_Region"]
+[node name="CSGBox3D5" type="CSGBox3D" parent="level/Nav_Region" groups=["obstacle"]]
 transform = Transform3D(-3.35922e-07, -5.24116, 5.62045, 0, 5.62045, 5.24116, -7.685, 2.29098e-07, -2.45678e-07, -8.70085, -1.23432, -0.0918653)
 use_collision = true
 size = Vector3(1, 0.568642, 1.27157)
