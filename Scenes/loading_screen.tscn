@@ -31,6 +31,7 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_dbrks"]
 resource_name = "end_load"
 length = 1.5
 tracks/0/type = "bezier"
