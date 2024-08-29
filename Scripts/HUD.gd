@@ -11,7 +11,6 @@ func _ready():
 	hit_cross_time = 0
 
 func _on_hit():
-	
 	hit_cross_time = hit_cross_time_save
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

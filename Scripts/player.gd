@@ -267,8 +267,6 @@ func _physics_process(delta):
 	_weapon_sway(delta)
 	_weapon_bob(velocity.length(), delta)
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
-	if(Input.is_action_just_pressed("left")):
-		print("Holy Sea")
 	if(shockwave_delay > 0):
 		shockwave_delay -= delta
 	if(Input.is_action_just_pressed("shockwave") and is_on_floor() and shockwave_delay <= 0):
@@ -313,7 +311,6 @@ func _physics_process(delta):
 			
 
 	# Jump process
-		
 	if is_on_floor() and Input.is_action_just_pressed("jump"):
 		velocity.y = jump_speed
 		is_sliding = false

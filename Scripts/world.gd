@@ -32,7 +32,7 @@ func _process(delta):
 			enemys_alive = true
 	if(enemys_alive == false):
 		round += 1
-		for i in range(round):
+		for i in range(round * ((round / 10) + 1)):
 			var spawn = spawn_points.pick_random()
 			var enemy_select= randi_range(1,4)
 			if(enemy_select == 1):
