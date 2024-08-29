@@ -17,11 +17,20 @@ var ATTACK_RANGE = 0
 
 @export var player_path : NodePath
 
+var ESCAPE_DISTANCE = 10
+
+
+var run_time = 1
+var run_time_save = run_time
+
 var dead = false
 
 var state_machine = null
 
 var velocitylocked = false
+
+
+var started_running = false
 
 var player_in_sight: bool
 var running_from_player = false
@@ -53,6 +62,7 @@ func _take_delayed_damage(taken_damage):
 	if(damage_timer <= 0):
 		damage_timer = 0.2
 		preloaded_damage += taken_damage
+		print("cancer")
 
 func _start_shooting():
 	currently_shooting = true
@@ -91,7 +101,8 @@ func _physics_process(delta):
 	ray_cast_3d.look_at(player_object.position)
 	
 func _process(_delta):
-
+	if(is_on_floor() == false):
+		velocity.y -= 9 * _delta
 	player_in_sight = false
 	if ray_cast_3d.is_colliding():
 		if(ray_cast_3d.get_collider() != null):
@@ -100,10 +111,11 @@ func _process(_delta):
 				if(position.distance_to(player_object.position) < 15):
 					running_from_player = true
 				else:
+					run_time = run_time_save
 					running_from_player = false
-	if(running_from_player and currently_shooting == false):
+	if(running_from_player == true and currently_shooting == false and run_time > 0):
 		mesh.rotation_degrees = lerp(mesh.rotation_degrees, Vector3(0,0,0), 1)
-	elif(running_from_player == true or currently_shooting == true):
+	elif(running_from_player == false or run_time <= 0):
 		mesh.rotation_degrees = lerp(mesh.rotation_degrees, Vector3(0,180,0), 1)
 	stun_time -= _delta
 	for i in $Enemy_Checker.get_overlapping_bodies():
@@ -131,18 +143,30 @@ func _process(_delta):
 			if(is_on_floor() == false):
 				velocity.y -= 9 * _delta
 		"walk":
+			
 			if(stun_time > 0):
 				velocity = lerp(velocity, Vector3(0, velocity.y, 0), 0.5)
 				move_and_slide()
 				return
-			velocitylocked = false
-			nav_agent.target_position = player_object.global_transform.origin
-			var next_nav_point = nav_agent.get_next_path_position()
-			var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
-			var nav = Vector3(fakenav.x, 0, fakenav.z)
-			if(running_from_player):
-				velocity = lerp(velocity, -nav, 0.5)
+			
+			if(running_from_player and run_time > 0):
+				
+				run_time -= _delta
+				velocitylocked = false
+				var direction = global_transform.origin.direction_to(player_object.global_transform.origin);
+				var target = global_transform.origin - direction * ESCAPE_DISTANCE;
+				target.y = global_transform.origin.y;
+				nav_agent.target_position = target
+				var next_nav_point = nav_agent.get_next_path_position()
+				var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+				var nav = Vector3(fakenav.x, 0, fakenav.z)
+				velocity = lerp(velocity, nav, 0.5)
 			else:
+				velocitylocked = false
+				nav_agent.target_position = player_object.global_transform.origin
+				var next_nav_point = nav_agent.get_next_path_position()
+				var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+				var nav = Vector3(fakenav.x, 0, fakenav.z)
 				velocity = lerp(velocity, nav, 0.5)
 			if(running_from_player== false):
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
@@ -158,11 +182,9 @@ func _process(_delta):
 			else:
 				attacking = false
 			look_at(Vector3(player_object.global_position.x, global_position.y, player_object.global_position.z), Vector3.UP)
-	if(is_on_floor() == false):
-		velocity.y -= 9 * _delta
-	if(player_in_sight and running_from_player == false):
+	if(player_in_sight and running_from_player == false or player_in_sight and  run_time <= 0):
 		anim_tree.set("parameters/conditions/shoot", true)
-	if(!player_in_sight or running_from_player == true):
+	if(!player_in_sight or running_from_player == true and run_time > 0):
 		if(currently_shooting == false):
 			anim_tree.set("parameters/conditions/walk", true)
 		else:

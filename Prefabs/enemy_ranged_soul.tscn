@@ -1,14 +1,12 @@
-[gd_scene load_steps=34 format=3 uid="uid://c8b4k62c2f84t"]
+[gd_scene load_steps=29 format=3 uid="uid://c8b4k62c2f84t"]
 
 [ext_resource type="Script" path="res://Scripts/Enemy_Ranged_Soul.gd" id="1_j3rxd"]
 [ext_resource type="Texture2D" uid="uid://e3ya6xqomp01" path="res://Sprites/eyes/frame_10_delay-0.1s.png" id="2_t65hv"]
 [ext_resource type="Material" uid="uid://7srh785dkkdd" path="res://Materials/eye.tres" id="3_ntnhw"]
-[ext_resource type="Script" path="res://Scripts/Run_Points.gd" id="4_0xj8m"]
-[ext_resource type="Script" path="res://Scripts/Run_Point.gd" id="5_kttg1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_mtauu"]
-radius = 0.33
-height = 1.42825
+radius = 0.37
+height = 1.76
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gopka"]
 radius = 0.236458
@@ -185,13 +183,6 @@ _data = {
 "rotate": SubResource("Animation_tcf27")
 }
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_w8a4a"]
-radius = 0.28
-
-[sub_resource type="SphereMesh" id="SphereMesh_t761v"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oj534"]
-
 [node name="Enemy_Ranged_Soul" type="CharacterBody3D"]
 script = ExtResource("1_j3rxd")
 
@@ -202,7 +193,7 @@ hit_from_inside = true
 collide_with_areas = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00434351, 0.752839, -0.0202732)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00434351, 0.935923, -0.0202732)
 shape = SubResource("CapsuleShape3D_mtauu")
 
 [node name="HeadCollider" type="CollisionShape3D" parent="."]
@@ -258,97 +249,3 @@ libraries = {
 "": SubResource("AnimationLibrary_03ynx")
 }
 autoplay = "rotate"
-
-[node name="Run_Points" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.878763, 0)
-script = ExtResource("4_0xj8m")
-
-[node name="Run_Point1" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 3)
-script = ExtResource("5_kttg1")
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point1"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point1/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point1"]
-mesh = SubResource("SphereMesh_t761v")
-surface_material_override/0 = SubResource("StandardMaterial3D_oj534")
-
-[node name="Run_Point2" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, -3)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point2"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point2/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point2"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point3" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 2.08165e-12, 2.08165e-12)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point3"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point3/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point3"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point4" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 2.08165e-12, 2.08165e-12)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point4"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point4/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point4"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point5" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.08165e-12, -1.5)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point5"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point5/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point5"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point6" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.08165e-12, 1.5)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point6"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point6/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point6"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point7" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 2.08165e-12, 1.5)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point7"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point7/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point7"]
-mesh = SubResource("SphereMesh_t761v")
-
-[node name="Run_Point8" type="Node3D" parent="Run_Points"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 2.08165e-12, -1.5)
-
-[node name="Area3D" type="Area3D" parent="Run_Points/Run_Point8"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Run_Points/Run_Point8/Area3D"]
-shape = SubResource("SphereShape3D_w8a4a")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Run_Points/Run_Point8"]
-mesh = SubResource("SphereMesh_t761v")

@@ -18,6 +18,12 @@ var ATTACK_RANGE = 0
 
 @export var player_path : NodePath
 
+var ESCAPE_DISTANCE = 10
+
+
+var run_time = 1
+var run_time_save = run_time
+
 var dead = false
 
 var state_machine = null
@@ -56,7 +62,7 @@ func _start_shooting():
 func _take_damage(taken_damage):
 	emit_signal("enemy_hit")
 	health -= taken_damage
-
+@onready var mesh = $Armature_002
 
 func _return_direction(loc: Vector3):
 	velocitylocked = true
@@ -87,7 +93,8 @@ func _physics_process(delta):
 	$RayCast3D.look_at(player_object.position)
 	
 func _process(_delta):
-
+	if(is_on_floor() == false):
+		velocity.y -= 9 * _delta
 	player_in_sight = false
 	if $RayCast3D.is_colliding():
 		if $RayCast3D.get_collider().name == "Player":
@@ -96,10 +103,10 @@ func _process(_delta):
 				running_from_player = true
 			else:
 				running_from_player = false
-	if(running_from_player and currently_shooting == false):
-		$Armature_002.rotation_degrees = lerp($Armature_002.rotation_degrees, Vector3(90,0,0), 1)
-	elif(running_from_player == true or currently_shooting == true):
-		$Armature_002.rotation_degrees = lerp($Armature_002.rotation_degrees, Vector3(90,180,0), 1)
+	if(running_from_player == true and currently_shooting == false and run_time > 0):
+		mesh.rotation_degrees = lerp(mesh.rotation_degrees, Vector3(90,0,0), 1)
+	elif(running_from_player == false or run_time <= 0):
+		mesh.rotation_degrees = lerp(mesh.rotation_degrees, Vector3(90,180,0), 1)
 	stun_time -= _delta
 	for i in $Enemy_Checker.get_overlapping_bodies():
 		if i is enemy or i is enemy_soul:
@@ -130,14 +137,24 @@ func _process(_delta):
 				velocity = lerp(velocity, Vector3(0, velocity.y, 0), 0.5)
 				move_and_slide()
 				return
-			velocitylocked = false
-			nav_agent.target_position = player_object.global_transform.origin
-			var next_nav_point = nav_agent.get_next_path_position()
-			var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
-			var nav = Vector3(fakenav.x, 0, fakenav.z)
-			if(running_from_player):
-				velocity = lerp(velocity, -nav, 0.5)
+			if(running_from_player and run_time > 0):
+				
+				run_time -= _delta
+				velocitylocked = false
+				var direction = global_transform.origin.direction_to(player_object.global_transform.origin);
+				var target = global_transform.origin - direction * ESCAPE_DISTANCE;
+				target.y = global_transform.origin.y;
+				nav_agent.target_position = target
+				var next_nav_point = nav_agent.get_next_path_position()
+				var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+				var nav = Vector3(fakenav.x, 0, fakenav.z)
+				velocity = lerp(velocity, nav, 0.5)
 			else:
+				velocitylocked = false
+				nav_agent.target_position = player_object.global_transform.origin
+				var next_nav_point = nav_agent.get_next_path_position()
+				var fakenav = ((next_nav_point - global_transform.origin).normalized() * speed)
+				var nav = Vector3(fakenav.x, 0, fakenav.z)
 				velocity = lerp(velocity, nav, 0.5)
 			if(running_from_player== false):
 				look_at(Vector3(player_object.global_position.x + velocity.x, global_position.y, player_object.global_position.z + velocity.z), Vector3.UP)
@@ -153,11 +170,9 @@ func _process(_delta):
 			else:
 				attacking = false
 			look_at(Vector3(player_object.global_position.x, global_position.y, player_object.global_position.z), Vector3.UP)
-	if(is_on_floor() == false):
-		velocity.y -= 9 * _delta
-	if(player_in_sight and running_from_player == false):
+	if(player_in_sight and running_from_player == false or player_in_sight and  run_time <= 0):
 		anim_tree.set("parameters/conditions/shoot", true)
-	if(!player_in_sight or running_from_player == true):
+	if(!player_in_sight or running_from_player == true and run_time > 0):
 		if(currently_shooting == false):
 			anim_tree.set("parameters/conditions/walk", true)
 		else:
@@ -167,7 +182,6 @@ func _process(_delta):
 	anim_tree.set("parameters/conditions/falling", !is_on_floor())
 	if(!is_on_floor()):
 		anim_tree.set("parameters/conditions/walk", false)
-		running_from_player = false
 
 	
 	move_and_slide()

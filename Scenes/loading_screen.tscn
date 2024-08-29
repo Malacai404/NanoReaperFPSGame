@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://c63nt0r50lpp4"]
+[gd_scene load_steps=7 format=3 uid="uid://c63nt0r50lpp4"]
 
 [ext_resource type="Script" path="res://Scripts/loading_screen.gd" id="1_0ue12"]
 
@@ -31,8 +31,7 @@ tracks/1/keys = {
 }]
 }
 
-[sub_resource type="Animation" id="Animation_eq7tl"]
-resource_name = "start_load"
+resource_name = "end_load"
 length = 1.5
 tracks/0/type = "bezier"
 tracks/0/imported = false
@@ -42,18 +41,21 @@ tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "handle_modes": PackedInt32Array(0, 0),
-"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1920, -0.2, -2576.23, 0.2, -2245.5),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0, 1920, -0.7, 613.952, 0.2, -2245.5),
 "times": PackedFloat32Array(0, 0.8)
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_51cbk"]
 _data = {
-"end_load": SubResource("Animation_eq7tl"),
+"end_load": SubResource("Animation_dbrks"),
 "start_load": SubResource("Animation_gg31y")
 }
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_37rfp"]
 bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Theme" id="Theme_8rc13"]
+default_font_size = 40
 
 [node name="loading_screen" type="CanvasLayer"]
 layer = 10
@@ -88,3 +90,19 @@ offset_right = 519.999
 offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.915
+anchor_right = 0.5
+anchor_bottom = 0.915
+offset_left = -147.5
+offset_top = -11.0401
+offset_right = 147.5
+offset_bottom = 11.96
+grow_horizontal = 2
+grow_vertical = 0
+theme = SubResource("Theme_8rc13")
+text = "Tip: This is not where the tips show up"
