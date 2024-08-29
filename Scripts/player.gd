@@ -203,7 +203,7 @@ func _physics_process(delta):
 		$HUD/ColorRect.visible = true
 		get_tree().paused = true
 	else:
-		if(goofy_menu == false):
+		if(goofy_menu == false and dead == false):
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		$HUD/ColorRect.visible = false
 		get_tree().paused = false
@@ -469,7 +469,6 @@ func _weapon_bob(vel: float, delta):
 
 
 func _on_back_pressed():
-	print("off menu")
 	on_menu = false
 
 

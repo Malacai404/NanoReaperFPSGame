@@ -62,7 +62,6 @@ func _take_delayed_damage(taken_damage):
 	if(damage_timer <= 0):
 		damage_timer = 0.2
 		preloaded_damage += taken_damage
-		print("cancer")
 
 func _start_shooting():
 	currently_shooting = true
@@ -103,6 +102,11 @@ func _physics_process(delta):
 func _process(_delta):
 	if(is_on_floor() == false):
 		velocity.y -= 9 * _delta
+		anim_tree.set("parameters/conditions/walk", false)
+		anim_tree.set("parameters/conditions/shoot", false)
+		anim_tree.set("parameters/conditions/falling", true)
+		move_and_slide()
+		return
 	player_in_sight = false
 	if ray_cast_3d.is_colliding():
 		if(ray_cast_3d.get_collider() != null):

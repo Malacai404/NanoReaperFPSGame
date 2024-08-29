@@ -95,6 +95,11 @@ func _physics_process(delta):
 func _process(_delta):
 	if(is_on_floor() == false):
 		velocity.y -= 9 * _delta
+		anim_tree.set("parameters/conditions/walk", false)
+		anim_tree.set("parameters/conditions/shoot", false)
+		anim_tree.set("parameters/conditions/falling", true)
+		move_and_slide()
+		return
 	player_in_sight = false
 	if $RayCast3D.is_colliding():
 		if $RayCast3D.get_collider().name == "Player":
